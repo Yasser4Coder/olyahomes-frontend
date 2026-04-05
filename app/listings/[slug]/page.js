@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -30,8 +31,15 @@ export default async function ListingDetailPage({ params }) {
         ← All listings
       </Link>
       <div className="mt-6 overflow-hidden rounded-2xl border border-secondary/15 bg-white shadow-sm">
-        <div className="flex min-h-[240px] items-center justify-center bg-gradient-to-br from-primary/15 to-secondary/20 sm:min-h-[320px]">
-          <span className="text-secondary/80">Gallery placeholder</span>
+        <div className="relative h-[240px] w-full bg-zinc-200 sm:h-[320px]">
+          <Image
+            src={home.coverImage}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="(max-width: 896px) 100vw, 896px"
+            priority
+          />
         </div>
         <div className="p-6 sm:p-8">
           <h1 className="text-3xl font-semibold text-foreground">

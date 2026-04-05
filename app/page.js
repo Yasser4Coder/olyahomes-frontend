@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
 import { sampleListings } from "@/lib/sampleListings";
@@ -29,10 +30,14 @@ export default function Home() {
           {featured.map((home) => (
             <li key={home.slug}>
               <article className="overflow-hidden rounded-2xl border border-secondary/15 bg-white shadow-sm transition hover:shadow-md">
-                <div className="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-secondary/20 to-primary/10">
-                  <span className="text-sm font-medium text-secondary/80">
-                    Photo placeholder
-                  </span>
+                <div className="relative aspect-[4/3] bg-zinc-200">
+                  <Image
+                    src={home.coverImage}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+                  />
                 </div>
                 <div className="p-5">
                   <h3 className="font-semibold text-foreground">
