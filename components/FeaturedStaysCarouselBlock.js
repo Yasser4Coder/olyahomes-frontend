@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { formatAED } from "@/lib/currency";
 
 function DiagonalArrow({ className }) {
   return (
@@ -154,7 +155,7 @@ export default function FeaturedStaysCarouselBlock({ featured, carousel, compact
                               : "text-lg [@media(max-height:640px)]:mt-1 [@media(max-height:640px)]:text-base"
                           }`}
                         >
-                          ${stay.pricePerNight}
+                          {formatAED(stay.pricePerNight)}
                           <span
                             className={`font-semibold text-zinc-400 ${
                               compact ? "text-xs" : "text-xs [@media(max-height:640px)]:text-[0.65rem]"

@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import FeaturedStaysCarouselBlock from "@/components/FeaturedStaysCarouselBlock";
+import HostAvatarStack from "@/components/HostAvatarStack";
 import { sampleListings } from "@/lib/sampleListings";
 import { useFeaturedCarousel } from "@/components/useFeaturedCarousel";
 
@@ -89,24 +90,7 @@ export default function HeroSideContent() {
               </div>
 
               <div className="mt-4 flex items-center gap-4 [@media(max-height:640px)]:mt-3 [@media(max-height:640px)]:gap-3">
-                <div className="flex -space-x-3 [@media(max-height:640px)]:-space-x-2">
-                  {[0, 1, 2].map((j) => (
-                    <div
-                      key={j}
-                      className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-white bg-zinc-200 shadow-sm ring-1 ring-zinc-200 [@media(max-height:640px)]:h-10 [@media(max-height:640px)]:w-10"
-                    >
-                      <div
-                        className={`absolute inset-0 bg-linear-to-br ${
-                          j === 0
-                            ? "from-amber-100 to-secondary/60"
-                            : j === 1
-                              ? "from-sky-100 to-primary/40"
-                              : "from-zinc-300 to-secondary/50"
-                        }`}
-                      />
-                    </div>
-                  ))}
-                </div>
+                <HostAvatarStack />
                 <div className="min-w-0 flex-1 border-l border-zinc-100 pl-4 [@media(max-height:640px)]:pl-3">
                   <p className="text-sm font-semibold text-zinc-800 [@media(max-height:640px)]:text-xs">
                     Local tips · spotless turnovers

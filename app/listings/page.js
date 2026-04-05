@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import PageHeading from "@/components/PageHeading";
+import { formatAED } from "@/lib/currency";
 import { sampleListings } from "@/lib/sampleListings";
 
 export const metadata = {
@@ -41,7 +42,7 @@ export default function ListingsPage() {
                   {home.guests} guests · {home.bedrooms} bed · {home.baths} bath
                 </p>
                 <p className="mt-4 font-semibold text-primary">
-                  ${home.pricePerNight}{" "}
+                  {formatAED(home.pricePerNight)}{" "}
                   <span className="text-sm font-normal text-foreground/55">
                     / night
                   </span>

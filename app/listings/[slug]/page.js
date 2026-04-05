@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { formatAED } from "@/lib/currency";
 import {
   getListingBySlug,
   sampleListings,
@@ -63,7 +64,7 @@ export default async function ListingDetailPage({ params }) {
           </dl>
           <div className="mt-10 flex flex-col gap-4 border-t border-secondary/15 pt-8 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-2xl font-bold text-primary">
-              ${home.pricePerNight}
+              {formatAED(home.pricePerNight)}
               <span className="text-base font-normal text-foreground/55">
                 {" "}
                 / night
