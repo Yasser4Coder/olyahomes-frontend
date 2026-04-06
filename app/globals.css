@@ -23,6 +23,10 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
+.font-hero-serif {
+  font-family: var(--font-hero-serif), ui-serif, Georgia, "Times New Roman", serif;
+}
+
 button:not(:disabled),
 input[type="button"]:not(:disabled),
 input[type="submit"]:not(:disabled),
@@ -37,6 +41,116 @@ input[type="submit"]:disabled,
 input[type="reset"]:disabled,
 [role="button"][aria-disabled="true"] {
   cursor: not-allowed;
+}
+
+/* Hero — ultra-soft atmosphere drift + grain (CSS only) */
+@keyframes hero-atmosphere-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.38;
+  }
+  50% {
+    transform: translate3d(1.25%, -0.9%, 0) scale(1.05);
+    opacity: 0.48;
+  }
+}
+
+@keyframes hero-grain-shift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 256px 256px;
+  }
+}
+
+@keyframes hero-clarity-breathe {
+  0%,
+  100% {
+    opacity: 0.48;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.64;
+    transform: translate3d(0.45%, -0.35%, 0) scale(1.035);
+  }
+}
+
+.hero-atmosphere-drift {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: soft-light;
+  /* Brand #aa6325 / #966f52 — low-alpha washes */
+  background:
+    radial-gradient(
+      ellipse 125% 95% at 12% -8%,
+      rgb(170 99 37 / 0.14),
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse 110% 85% at 102% 108%,
+      rgb(150 111 82 / 0.11),
+      transparent 50%
+    );
+  animation: hero-atmosphere-drift 52s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.hero-grain-drift {
+  position: absolute;
+  inset: 0;
+  opacity: 0.022;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  background-repeat: repeat;
+  animation: hero-grain-shift 44s linear infinite;
+}
+
+/* Airy “clear” lift: soft daylight + crisp top edge (screen = reads brighter/cleaner) */
+.hero-clarity-layer {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(
+      to bottom,
+      rgb(255 252 248 / 0.11) 0%,
+      rgb(255 255 255 / 0.035) 22%,
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse 95% 72% at 50% 18%,
+      rgb(255 249 242 / 0.1),
+      transparent 58%
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0.06) 0,
+      rgb(255 255 255 / 0.015) max(8%, 4.5rem),
+      transparent min(28%, 11rem)
+    );
+  animation: hero-clarity-breathe 58s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-atmosphere-drift,
+  .hero-grain-drift,
+  .hero-clarity-layer {
+    animation: none;
+  }
+
+  .hero-atmosphere-drift {
+    opacity: 0.4;
+    transform: none;
+  }
+
+  .hero-clarity-layer {
+    opacity: 0.55;
+    transform: none;
+  }
 }
 
 /* Featured homes Swiper — bullets + pagination placement */

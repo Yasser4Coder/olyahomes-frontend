@@ -124,17 +124,17 @@ export default function HomeHowItWorksSection() {
 
   return (
     <section
-      className="relative isolate overflow-hidden border-t border-secondary/15 bg-linear-to-b from-white/60 to-neutral"
+      className="relative z-0 isolate overflow-hidden border-t border-secondary/15 bg-linear-to-b from-white/60 to-neutral"
       aria-labelledby="how-it-works-home-heading"
     >
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 bg-linear-to-t from-zinc-900/[0.06] to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 bg-linear-to-t from-zinc-900/6 to-transparent"
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 md:px-10 lg:px-14 lg:py-24">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pl-5 pt-10 sm:px-6 sm:pb-20 sm:pl-7 sm:pt-12 md:px-10 md:pl-10 md:pt-14 lg:px-14 lg:pb-24 lg:pl-12 lg:pt-32">
         <motion.div
-          className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
+          className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between sm:gap-12"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
@@ -143,25 +143,34 @@ export default function HomeHowItWorksSection() {
             visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.08 } },
           }}
         >
-          <motion.div variants={headerMotion} className="max-w-2xl">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-secondary">
-              How it works
-            </p>
-            <h2
-              id="how-it-works-home-heading"
-              className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[2.35rem] lg:leading-tight"
-            >
-              From browse to booking in three calm steps
-            </h2>
-            <p className="mt-3 text-base leading-relaxed text-foreground/65 sm:text-[1.05rem]">
-              Explore homes you love, lock in your dates, then pay safely—all
-              in one straightforward flow.
-            </p>
+          <motion.div
+            variants={headerMotion}
+            className="flex max-w-xl gap-5 sm:gap-6"
+          >
+            <div
+              className="hidden w-1 shrink-0 rounded-full bg-primary sm:block"
+              aria-hidden
+            />
+            <div>
+              <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-secondary">
+                How it works
+              </p>
+              <h2
+                id="how-it-works-home-heading"
+                className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+              >
+                From browse to booking in three calm steps
+              </h2>
+              <p className="mt-3 text-base leading-relaxed text-foreground/60">
+                Explore homes you love, lock in your dates, then pay safely—all
+                in one straightforward flow.
+              </p>
+            </div>
           </motion.div>
-          <motion.div variants={headerMotion} className="shrink-0">
+          <motion.div variants={headerMotion} className="shrink-0 sm:pt-1">
             <Link
               href="/how-it-works"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition hover:bg-primary/90"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-primary underline decoration-primary/30 decoration-2 underline-offset-4 transition hover:decoration-primary"
             >
               Full guide
               <DiagonalArrow className="h-4 w-4" />
@@ -194,7 +203,7 @@ export default function HomeHowItWorksSection() {
                     aria-hidden
                   />
                 ) : null}
-                <article className="relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-zinc-200/90 bg-white p-6 shadow-xl shadow-zinc-900/10 ring-1 ring-zinc-900/[0.04] sm:p-8">
+                <article className="relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-zinc-200/90 bg-white p-6 shadow-xl shadow-zinc-900/10 ring-1 ring-zinc-900/4 sm:p-8">
                   <div className="flex items-start justify-between gap-4">
                     <span className="font-mono text-3xl font-bold tabular-nums text-primary/90 sm:text-4xl">
                       {s.step}

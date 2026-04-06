@@ -18,6 +18,7 @@ const homeNav = [
   { href: "/", label: "Home" },
   { href: "/listings", label: "Browse" },
   { href: "/how-it-works", label: "How it works" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -45,8 +46,8 @@ export default function SiteHeader() {
   }, [isHome]);
 
   const headerChrome = solidBar
-    ? "border-b border-black/[0.06] bg-neutral/92 shadow-[inset_0_1px_0_0_rgb(255_255_255_/_0.7)] backdrop-blur-2xl backdrop-saturate-150 supports-backdrop-filter:bg-neutral/[0.52]"
-    : "border-b border-white/[0.18] bg-white/25 shadow-[inset_0_1px_0_0_rgb(255_255_255_/_0.35)] backdrop-blur-2xl backdrop-saturate-150 supports-backdrop-filter:bg-white/[0.12]";
+    ? "bg-neutral/92 shadow-[inset_0_1px_0_0_rgb(255_255_255_/_0.7)] backdrop-blur-2xl backdrop-saturate-150 supports-backdrop-filter:bg-neutral/[0.52]"
+    : "bg-transparent";
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 ${headerChrome}`}>
@@ -54,15 +55,17 @@ export default function SiteHeader() {
         className={`mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 ${
           isHome && !solidBar
             ? "justify-between md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-8"
-            : ""
+            : solidBar && isHome
+              ? "max-md:justify-between md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-8"
+              : ""
         }`}
       >
         <Link
           href="/"
           className={
             solidBar
-              ? "flex shrink-0 items-center gap-2.5 text-primary hover:opacity-90"
-              : "flex shrink-0 items-center gap-2.5 text-white hover:opacity-90 md:justify-self-start"
+              ? "flex shrink-0 items-center gap-2.5 text-primary hover:opacity-90 md:justify-self-start"
+              : "flex shrink-0 items-center gap-2.5 md:justify-self-start"
           }
         >
           <Image
@@ -72,10 +75,18 @@ export default function SiteHeader() {
             height={36}
             sizes="36px"
             className={`h-9 w-9 shrink-0 object-contain ${
-              solidBar ? "" : "drop-shadow-md"
+              solidBar ? "" : "drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]"
             }`}
           />
-          <span className="text-lg font-bold tracking-tight">Olyahomes</span>
+          <span
+            className={
+              solidBar
+                ? "text-lg font-bold tracking-tight"
+                : "font-hero-serif text-xl font-semibold tracking-[0.12em] text-[#e6cf9c] drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
+            }
+          >
+            OLYAHOMES
+          </span>
         </Link>
 
         {solidBar ? (
@@ -102,8 +113,11 @@ export default function SiteHeader() {
                 );
               })}
             </nav>
+            {/* Home mobile: links live in the second row only — avoids duplicating nav beside auth */}
             <nav
-              className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto md:hidden"
+              className={`min-w-0 flex-1 items-center gap-1 overflow-x-auto md:hidden ${
+                isHome ? "hidden" : "flex"
+              }`}
               aria-label="Main mobile"
             >
               {items.map(({ href, label }) => {
@@ -124,16 +138,16 @@ export default function SiteHeader() {
                 );
               })}
             </nav>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3 md:justify-self-end">
               <Link
                 href="/login"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-secondary hover:bg-secondary/10"
+                className="whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium text-secondary hover:bg-secondary/10 sm:px-3"
               >
                 Log in
               </Link>
               <Link
                 href="/signup"
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
+                className="inline-flex min-h-10 shrink-0 items-center justify-center whitespace-nowrap rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-md shadow-primary/25 ring-1 ring-primary/20 transition hover:bg-primary/90 active:scale-[0.98] sm:min-h-0 sm:px-5"
               >
                 Sign up
               </Link>
@@ -142,7 +156,7 @@ export default function SiteHeader() {
         ) : (
           <>
             <nav
-              className="hidden items-center justify-center gap-1 justify-self-center md:flex"
+              className="hidden items-center justify-center gap-0.5 justify-self-center md:flex"
               aria-label="Main"
             >
               {items.map(({ href, label }) => {
@@ -154,29 +168,33 @@ export default function SiteHeader() {
                   <Link
                     key={href}
                     href={href}
-                    className="relative px-3 py-2 text-sm font-medium text-white/95 transition [text-shadow:0_1px_2px_rgba(0,0,0,0.45)] hover:text-white"
+                    className={`relative px-3 py-2.5 text-sm font-medium transition [text-shadow:0_1px_3px_rgba(0,0,0,0.5)] ${
+                      active
+                        ? "text-white"
+                        : "text-white/88 hover:text-white"
+                    }`}
                   >
-                    {active ? (
-                      <span
-                        className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary"
-                        aria-hidden
-                      />
-                    ) : null}
-                    <span className={active ? "text-white" : ""}>{label}</span>
+                    {label}
+                    <span
+                      className={`absolute bottom-1 left-3 right-3 h-0.5 rounded-full bg-primary transition-opacity ${
+                        active ? "opacity-100" : "opacity-0 hover:opacity-40"
+                      }`}
+                      aria-hidden
+                    />
                   </Link>
                 );
               })}
             </nav>
-            <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2 md:justify-self-end">
+            <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3 md:justify-self-end">
               <Link
                 href="/login"
-                className="rounded-lg px-2.5 py-2 text-xs font-semibold text-white/95 transition [text-shadow:0_1px_2px_rgba(0,0,0,0.4)] hover:bg-white/10 hover:text-white sm:px-3 sm:text-sm sm:font-medium"
+                className="whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium text-white/95 transition [text-shadow:0_1px_3px_rgba(0,0,0,0.45)] hover:text-white sm:px-3"
               >
                 Log in
               </Link>
               <Link
                 href="/signup"
-                className="rounded-full bg-white px-3.5 py-2 text-xs font-semibold text-zinc-900 shadow-md transition hover:bg-zinc-100 sm:px-4 md:rounded-lg md:py-2 md:text-sm"
+                className="inline-flex min-h-10 shrink-0 items-center justify-center whitespace-nowrap rounded-full bg-[#d4b896] px-4 py-2 text-sm font-semibold text-zinc-900 shadow-lg shadow-black/25 ring-1 ring-white/25 transition hover:bg-[#e5cfae] active:scale-[0.98] sm:min-h-0 sm:px-5"
               >
                 Sign up
               </Link>

@@ -67,7 +67,15 @@ function IconDog({ className }) {
   );
 }
 
-export default function HomeSearchBar() {
+function ArrowRight({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-7-7 7 7-7 7" />
+    </svg>
+  );
+}
+
+export default function HomeSearchBar({ variant = "default" }) {
   const router = useRouter();
   const rootRef = useRef(null);
   const [panel, setPanel] = useState(null);
@@ -101,6 +109,14 @@ export default function HomeSearchBar() {
       ? "1 guest"
       : `${adults + children} guests`;
 
+  const isHero = variant === "hero";
+  const dateSubHero =
+    checkIn && checkOut
+      ? `${checkIn} – ${checkOut}`
+      : checkIn
+        ? `${checkIn} → …`
+        : "Add dates";
+
   const submitSearch = () => {
     const q = new URLSearchParams();
     if (location.trim()) q.set("location", location.trim());
@@ -115,48 +131,105 @@ export default function HomeSearchBar() {
   };
 
   const segmentBase =
-    "flex min-h-[52px] flex-1 items-center gap-2.5 px-4 py-3 text-left transition sm:min-h-0 sm:py-3.5";
+    "flex min-h-[52px] flex-1 items-center gap-3 px-4 py-3 text-left transition sm:min-h-0 sm:gap-2.5 sm:py-3.5";
+  const segmentHero =
+    "flex min-h-[3.25rem] flex-1 items-center gap-3 text-left transition max-sm:min-h-0 max-sm:rounded-xl max-sm:border-0 max-sm:bg-white max-sm:px-3.5 max-sm:py-3.5 max-sm:shadow-sm max-sm:ring-1 max-sm:ring-zinc-900/[0.06] sm:min-h-0 sm:rounded-none sm:bg-transparent sm:px-4 sm:py-4 sm:pl-5 sm:pr-4 sm:shadow-none sm:ring-0";
+  const segmentHeroIconWrap =
+    "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/[0.11] text-primary sm:h-auto sm:w-auto sm:rounded-none sm:bg-transparent sm:text-secondary";
+  const heroLabelSm =
+    "text-[0.625rem] font-bold uppercase tracking-[0.14em] text-zinc-400 sm:text-xs sm:font-semibold sm:normal-case sm:tracking-normal sm:text-foreground";
+  const heroValueSm =
+    "text-sm font-medium text-zinc-700 sm:text-xs sm:font-normal sm:text-zinc-500";
   const divider = "hidden h-8 w-px shrink-0 bg-zinc-200 sm:block";
 
+  const barClass = isHero
+    ? "flex flex-col gap-2 overflow-hidden rounded-[1.25rem] border border-primary/25 bg-zinc-100/60 p-2 shadow-[0_18px_48px_-14px_rgba(0,0,0,0.22)] backdrop-blur-[2px] sm:gap-0 sm:rounded-full sm:border-2 sm:border-primary/45 sm:bg-white sm:p-1.5 sm:pl-2 sm:pr-2 sm:shadow-[0_24px_60px_-12px_rgba(0,0,0,0.45)] sm:ring-2 sm:ring-primary/15 sm:ring-offset-2 sm:ring-offset-transparent sm:backdrop-blur-none sm:flex-row sm:items-stretch"
+    : "flex flex-col overflow-hidden rounded-2xl border border-secondary/20 bg-white shadow-md shadow-zinc-900/5 sm:flex-row sm:items-stretch sm:rounded-full sm:py-1 sm:pl-1 sm:pr-1";
+
   return (
-    <div ref={rootRef} className="relative w-full">
-      <div className="flex flex-col overflow-hidden rounded-2xl border border-secondary/20 bg-white shadow-md shadow-zinc-900/5 sm:flex-row sm:items-stretch sm:rounded-full sm:py-1 sm:pl-1 sm:pr-1">
+    <div
+      ref={rootRef}
+      className={`relative w-full ${isHero ? "max-sm:drop-shadow-none sm:drop-shadow-[0_12px_40px_rgba(0,0,0,0.25)]" : ""}`}
+    >
+      <div className={barClass}>
         {/* Location */}
         <div className={`relative flex min-w-0 flex-1 flex-col sm:flex-row ${panel === "location" ? "bg-zinc-50" : ""}`}>
-          <div
-            className={`${segmentBase} w-full cursor-text rounded-none sm:rounded-l-full ${panel === "location" ? "bg-zinc-100/90" : "hover:bg-zinc-50/80"}`}
-            onMouseDown={(e) => {
-              if (e.target.closest("button")) return;
-              setPanel("location");
-            }}
-            role="search"
-          >
-            <IconSearch className="pointer-events-none h-5 w-5 shrink-0 text-secondary" />
-            <input
-              type="search"
-              autoComplete="off"
-              placeholder="Where to?"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              onFocus={() => setPanel("location")}
-              className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-foreground outline-none placeholder:font-medium placeholder:text-zinc-400"
-              aria-controls="home-search-location-panel"
-              aria-label="Destination"
-            />
-            {location ? (
-              <button
-                type="button"
-                className="shrink-0 rounded-full p-1 text-zinc-400 hover:bg-zinc-200/80 hover:text-foreground"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setLocation("");
-                }}
-                aria-label="Clear location"
-              >
-                ×
-              </button>
-            ) : null}
-          </div>
+          {isHero ? (
+            <div
+              className={`${segmentHero} w-full cursor-text rounded-none sm:rounded-l-full ${panel === "location" ? "max-sm:ring-2 max-sm:ring-primary/40 max-sm:bg-primary/6 sm:bg-zinc-100/90" : "max-sm:hover:bg-white sm:hover:bg-zinc-50/80"}`}
+              onMouseDown={(e) => {
+                if (e.target.closest("button")) return;
+                setPanel("location");
+              }}
+              role="search"
+            >
+              <span className={segmentHeroIconWrap} aria-hidden>
+                <IconPin className="pointer-events-none h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" />
+              </span>
+              <div className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
+                <span className={heroLabelSm}>Where to?</span>
+                <input
+                  type="search"
+                  autoComplete="off"
+                  placeholder="Search destinations"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  onFocus={() => setPanel("location")}
+                  className="w-full bg-transparent text-sm font-medium text-zinc-800 outline-none placeholder:font-normal placeholder:text-zinc-400 sm:text-xs sm:font-normal sm:text-zinc-600"
+                  aria-controls="home-search-location-panel"
+                  aria-label="Destination"
+                />
+              </div>
+              {location ? (
+                <button
+                  type="button"
+                  className="shrink-0 rounded-full p-1 text-zinc-400 hover:bg-zinc-200/80 hover:text-foreground"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLocation("");
+                  }}
+                  aria-label="Clear location"
+                >
+                  ×
+                </button>
+              ) : null}
+            </div>
+          ) : (
+            <div
+              className={`${segmentBase} w-full cursor-text rounded-none sm:rounded-l-full ${panel === "location" ? "bg-zinc-100/90" : "hover:bg-zinc-50/80"}`}
+              onMouseDown={(e) => {
+                if (e.target.closest("button")) return;
+                setPanel("location");
+              }}
+              role="search"
+            >
+              <IconSearch className="pointer-events-none h-5 w-5 shrink-0 text-secondary" />
+              <input
+                type="search"
+                autoComplete="off"
+                placeholder="Where to?"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                onFocus={() => setPanel("location")}
+                className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-foreground outline-none placeholder:font-medium placeholder:text-zinc-400"
+                aria-controls="home-search-location-panel"
+                aria-label="Destination"
+              />
+              {location ? (
+                <button
+                  type="button"
+                  className="shrink-0 rounded-full p-1 text-zinc-400 hover:bg-zinc-200/80 hover:text-foreground"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLocation("");
+                  }}
+                  aria-label="Clear location"
+                >
+                  ×
+                </button>
+              ) : null}
+            </div>
+          )}
           <span className={divider} aria-hidden />
         </div>
 
@@ -164,12 +237,30 @@ export default function HomeSearchBar() {
         <div className={`relative flex min-w-0 flex-1 flex-col sm:flex-row ${panel === "dates" ? "bg-zinc-50" : ""}`}>
           <button
             type="button"
-            className={`${segmentBase} w-full ${panel === "dates" ? "bg-zinc-100/90" : "hover:bg-zinc-50/80"}`}
+            className={`${isHero ? segmentHero : segmentBase} w-full ${panel === "dates" ? "max-sm:ring-2 max-sm:ring-primary/40 max-sm:bg-primary/6 sm:bg-zinc-100/90" : "max-sm:hover:bg-white sm:hover:bg-zinc-50/80"}`}
             onClick={() => setPanel((p) => (p === "dates" ? null : "dates"))}
             aria-expanded={panel === "dates"}
           >
-            <IconCalendar className="h-5 w-5 shrink-0 text-secondary" />
-            <span className="truncate text-sm font-medium text-foreground">{dateLabel}</span>
+            {isHero ? (
+              <span className={segmentHeroIconWrap} aria-hidden>
+                <IconCalendar className="h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" />
+              </span>
+            ) : (
+              <IconCalendar className="h-5 w-5 shrink-0 text-secondary" />
+            )}
+            {isHero ? (
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
+                <span className={heroLabelSm}>
+                  <span className="sm:hidden">Dates</span>
+                  <span className="max-sm:hidden">Check in — Check out</span>
+                </span>
+                <span className={`truncate ${heroValueSm}`}>{dateSubHero}</span>
+              </span>
+            ) : (
+              <span className="truncate text-sm font-medium text-foreground">
+                {dateLabel}
+              </span>
+            )}
           </button>
           <span className={divider} aria-hidden />
         </div>
@@ -178,21 +269,41 @@ export default function HomeSearchBar() {
         <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-0">
           <button
             type="button"
-            className={`${segmentBase} w-full shrink-0 sm:w-auto sm:max-w-36 sm:min-w-0 ${panel === "guests" ? "bg-zinc-100/90" : "hover:bg-zinc-50/80"}`}
+            className={`${isHero ? segmentHero : segmentBase} w-full shrink-0 sm:w-auto ${isHero ? "sm:min-w-32" : "sm:max-w-36 sm:min-w-0"} ${panel === "guests" ? "max-sm:ring-2 max-sm:ring-primary/40 max-sm:bg-primary/6 sm:bg-zinc-100/90" : "max-sm:hover:bg-white sm:hover:bg-zinc-50/80"}`}
             onClick={() => setPanel((p) => (p === "guests" ? null : "guests"))}
             aria-expanded={panel === "guests"}
           >
-            <IconUser className="h-5 w-5 shrink-0 text-secondary" />
-            <span className="truncate text-sm font-medium text-foreground">{guestLabel}</span>
+            {isHero ? (
+              <span className={segmentHeroIconWrap} aria-hidden>
+                <IconUser className="h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" />
+              </span>
+            ) : (
+              <IconUser className="h-5 w-5 shrink-0 text-secondary" />
+            )}
+            {isHero ? (
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
+                <span className={heroLabelSm}>Guests</span>
+                <span className={`truncate ${heroValueSm}`}>{guestLabel}</span>
+              </span>
+            ) : (
+              <span className="truncate text-sm font-medium text-foreground">
+                {guestLabel}
+              </span>
+            )}
           </button>
 
-          <div className="px-3 pb-3 sm:contents sm:p-0">
+          <div className="px-0 pb-0 pt-0 sm:contents sm:p-0">
             <button
               type="button"
               onClick={submitSearch}
-              className="w-full rounded-xl bg-linear-to-r from-primary to-secondary px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md shadow-primary/25 transition hover:opacity-95 sm:ml-auto sm:flex sm:w-auto sm:shrink-0 sm:items-center sm:justify-center sm:self-stretch sm:rounded-full sm:px-8 sm:py-0"
+              className={
+                isHero
+                  ? "flex w-full min-h-13 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-[0.9375rem] font-bold tracking-wide text-white shadow-[0_8px_24px_-4px_rgba(170,99,37,0.55)] transition active:scale-[0.99] hover:bg-primary/90 sm:ml-auto sm:min-h-0 sm:w-auto sm:shrink-0 sm:self-stretch sm:rounded-full sm:px-9 sm:py-0 sm:text-sm sm:shadow-lg sm:shadow-primary/35"
+                  : "flex w-full min-h-13 items-center justify-center rounded-xl bg-linear-to-r from-primary to-secondary px-6 py-3.5 text-sm font-bold tracking-wide text-white shadow-md shadow-primary/25 transition active:scale-[0.99] hover:opacity-95 sm:ml-auto sm:min-h-0 sm:w-auto sm:shrink-0 sm:self-stretch sm:rounded-full sm:px-8 sm:py-0"
+              }
             >
               Search
+              {isHero ? <ArrowRight className="h-[1.05rem] w-[1.05rem] shrink-0 sm:h-4 sm:w-4" /> : null}
             </button>
           </div>
         </div>
@@ -202,7 +313,7 @@ export default function HomeSearchBar() {
       {panel === "location" ? (
         <div
           id="home-search-location-panel"
-          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 rounded-2xl border border-zinc-200 bg-white p-3 shadow-xl shadow-zinc-900/10 sm:left-0 sm:right-auto sm:w-[min(100%,22rem)]"
+          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 rounded-2xl border border-zinc-200 bg-white p-3 shadow-xl shadow-zinc-900/10 max-sm:rounded-3xl max-sm:border-zinc-200/90 max-sm:p-3.5 max-sm:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.18)] sm:left-0 sm:right-auto sm:w-[min(100%,22rem)]"
         >
           <p className="px-2 pb-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
             Popular in UAE
@@ -234,7 +345,7 @@ export default function HomeSearchBar() {
 
       {/* Dates panel */}
       {panel === "dates" ? (
-        <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl shadow-zinc-900/10 sm:left-1/2 sm:w-[min(100%,28rem)] sm:-translate-x-1/2">
+        <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl shadow-zinc-900/10 max-sm:rounded-3xl max-sm:p-4 sm:left-1/2 sm:w-[min(100%,28rem)] sm:-translate-x-1/2">
           <div className="mb-4 flex rounded-full border border-zinc-200 bg-zinc-50 p-1">
             <button
               type="button"
@@ -291,7 +402,7 @@ export default function HomeSearchBar() {
 
       {/* Guests panel */}
       {panel === "guests" ? (
-        <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl shadow-zinc-900/10 sm:left-auto sm:right-0 sm:w-[min(100%,20rem)]">
+        <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl shadow-zinc-900/10 max-sm:rounded-3xl max-sm:p-4 sm:left-auto sm:right-0 sm:w-[min(100%,20rem)]">
           <div className="flex items-center justify-between gap-3 border-b border-zinc-100 py-3 first:pt-0">
             <div className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-100 text-secondary">
