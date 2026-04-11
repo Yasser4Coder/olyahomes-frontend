@@ -27,13 +27,30 @@ const HOME_SCROLL_SOLID = 48;
 
 export default function SiteHeader() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isLandingHome = pathname === "/";
+  const isListings = pathname?.startsWith("/listings");
+  const isAboutPage = pathname === "/about";
+  const isContactPage = pathname === "/contact";
+  const isHowItWorksPage = pathname === "/how-it-works";
+  /** Same header chrome + nav as home & listings (Home / Browse / …), incl. mobile second row. */
+  const usesHomeNavItems =
+    isLandingHome ||
+    isListings ||
+    isAboutPage ||
+    isContactPage ||
+    isHowItWorksPage;
   const [homeScrolled, setHomeScrolled] = useState(false);
-  const items = isHome ? homeNav : defaultNav;
-  const solidBar = !isHome || homeScrolled;
+  const items = usesHomeNavItems ? homeNav : defaultNav;
+  const solidBar =
+    isListings ||
+    isAboutPage ||
+    isContactPage ||
+    isHowItWorksPage ||
+    !isLandingHome ||
+    homeScrolled;
 
   useEffect(() => {
-    if (!isHome) {
+    if (!isLandingHome) {
       setHomeScrolled(false);
       return;
     }
@@ -43,7 +60,7 @@ export default function SiteHeader() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome]);
+  }, [isLandingHome]);
 
   const headerChrome = solidBar
     ? "bg-neutral/92 shadow-[inset_0_1px_0_0_rgb(255_255_255_/_0.7)] backdrop-blur-2xl backdrop-saturate-150 supports-backdrop-filter:bg-neutral/[0.52]"
@@ -53,9 +70,9 @@ export default function SiteHeader() {
     <header className={`fixed inset-x-0 top-0 z-50 ${headerChrome}`}>
       <div
         className={`mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 ${
-          isHome && !solidBar
+          isLandingHome && !solidBar
             ? "justify-between md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-8"
-            : solidBar && isHome
+            : solidBar && usesHomeNavItems
               ? "max-md:justify-between md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-8"
               : ""
         }`}
@@ -64,29 +81,21 @@ export default function SiteHeader() {
           href="/"
           className={
             solidBar
-              ? "flex shrink-0 items-center gap-2.5 text-primary hover:opacity-90 md:justify-self-start"
-              : "flex shrink-0 items-center gap-2.5 md:justify-self-start"
+              ? "flex shrink-0 items-center transition hover:opacity-90 md:justify-self-start"
+              : "flex shrink-0 items-center md:justify-self-start"
           }
         >
           <Image
-            src="/logo.png"
-            alt=""
-            width={36}
-            height={36}
-            sizes="36px"
-            className={`h-9 w-9 shrink-0 object-contain ${
-              solidBar ? "" : "drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]"
+            src="/logo-big.png"
+            alt="Olyahomes"
+            width={248}
+            height={54}
+            sizes="(max-width: 640px) 48vw, 248px"
+            priority
+            className={`h-9 w-auto max-w-[min(13rem,52vw)] object-contain object-left sm:h-10 sm:max-w-60 ${
+              solidBar ? "" : "drop-shadow-[0_2px_14px_rgba(0,0,0,0.4)]"
             }`}
           />
-          <span
-            className={
-              solidBar
-                ? "text-lg font-bold tracking-tight"
-                : "font-hero-serif text-xl font-semibold tracking-[0.12em] text-[#e6cf9c] drop-shadow-[0_1px_8px_rgba(0,0,0,0.45)]"
-            }
-          >
-            OLYAHOMES
-          </span>
         </Link>
 
         {solidBar ? (
@@ -116,7 +125,7 @@ export default function SiteHeader() {
             {/* Home mobile: links live in the second row only — avoids duplicating nav beside auth */}
             <nav
               className={`min-w-0 flex-1 items-center gap-1 overflow-x-auto md:hidden ${
-                isHome ? "hidden" : "flex"
+                usesHomeNavItems ? "hidden" : "flex"
               }`}
               aria-label="Main mobile"
             >
@@ -203,7 +212,7 @@ export default function SiteHeader() {
         )}
       </div>
 
-      {isHome ? (
+      {usesHomeNavItems ? (
         <nav
           className={`flex gap-2 overflow-x-auto px-4 py-2 md:hidden ${
             solidBar

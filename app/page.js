@@ -1,8 +1,8 @@
-import Link from "next/link";
 import FeaturedHomesSection from "@/components/FeaturedHomesSection";
 import HeroSection from "@/components/HeroSection";
 import HomeSearchBar from "@/components/HomeSearchBar";
 import HomeHowItWorksSection from "@/components/HomeHowItWorksSection";
+import HomeContactSection from "@/components/HomeContactSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import { sampleListings } from "@/lib/sampleListings";
 
@@ -29,22 +29,7 @@ export default function Home() {
 
       <TestimonialsSection />
 
-      <section className="border-t border-secondary/15 bg-white/50 px-4 py-16 sm:px-6">
-        <div className="mx-auto max-w-6xl text-center">
-          <h2 className="text-2xl font-semibold text-foreground">
-            Have a space to share?
-          </h2>
-          <p className="mx-auto mt-3 max-w-lg text-foreground/70">
-            List your home on Olyahomes and reach guests who value quality stays.
-          </p>
-          <Link
-            href="/host"
-            className="mt-8 inline-flex rounded-xl bg-secondary px-6 py-3 text-base font-semibold text-white transition hover:bg-secondary/90"
-          >
-            Become a host
-          </Link>
-        </div>
-      </section>
+      <HomeContactSection />
     </div>
   );
 }

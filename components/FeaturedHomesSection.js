@@ -12,21 +12,19 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-function DiagonalArrow({ className }) {
+function ArrowRight({ className }) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.2"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={className}
       aria-hidden
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M7 17L17 7M7 7h10v10"
-      />
+      <path d="M5 12h14M13 5l7 7-7 7" />
     </svg>
   );
 }
@@ -45,6 +43,65 @@ function MapPin({ className }) {
     >
       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
       <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function IconBed({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M3 10v9M3 14h18M5 14V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M9 21v-4M15 21v-4"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconBath({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M4 12h16M6 20h12M9 16v4M15 16v4M6 20V10a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v10"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconUsers({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconHeart({ className }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
     </svg>
   );
 }
@@ -80,21 +137,12 @@ export default function FeaturedHomesSection({ homes }) {
 
   return (
     <section
-      className="relative isolate overflow-hidden border-y border-zinc-300/70 bg-zinc-100/90"
+      className="relative isolate overflow-hidden border-y border-secondary/15 bg-[#fdfbf7]"
       aria-labelledby="featured-homes-heading"
     >
-      <div
-        className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-primary sm:w-1.5"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/90 via-transparent to-zinc-200/25"
-        aria-hidden
-      />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-20 pt-16 pl-5 sm:px-6 sm:pb-24 sm:pl-7 sm:pt-20 md:px-10 md:pl-10 lg:px-14 lg:pl-12">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 sm:pb-24 sm:pt-20 md:px-10 lg:px-14">
         <motion.div
-          className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between sm:gap-12"
+          className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between sm:gap-10"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
@@ -103,52 +151,49 @@ export default function FeaturedHomesSection({ homes }) {
             visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.07 } },
           }}
         >
-          <motion.div
-            variants={headerMotion}
-            className="flex max-w-xl gap-5 sm:gap-6"
-          >
+          <motion.div variants={headerMotion} className="flex max-w-xl gap-4 sm:gap-5">
             <div
-              className="hidden w-1 shrink-0 rounded-full bg-primary sm:block"
+              className="mt-1 w-px shrink-0 rounded-full bg-primary sm:w-[3px]"
               aria-hidden
             />
-            <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-secondary">
+            <div className="min-w-0">
+              <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-primary">
                 Curated stays
               </p>
               <h2
                 id="featured-homes-heading"
-                className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+                className="font-hero-serif mt-3 text-[clamp(1.85rem,4vw,2.85rem)] font-semibold leading-tight tracking-tight text-foreground"
               >
                 Featured homes
               </h2>
-              <p className="mt-3 text-base leading-relaxed text-foreground/60">
-                A taste of what is available—explore the full catalog anytime.
+              <p className="mt-3 text-base leading-relaxed text-foreground/55 sm:text-[1.05rem]">
+                A collection of handpicked stays, ready when you are.
               </p>
             </div>
           </motion.div>
-          <motion.div variants={headerMotion} className="shrink-0 sm:pt-1">
+          <motion.div variants={headerMotion} className="shrink-0 sm:pb-0.5">
             <Link
               href="/listings"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary underline decoration-primary/30 decoration-2 underline-offset-4 transition hover:decoration-primary"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary underline decoration-primary/50 decoration-2 underline-offset-[5px] transition hover:decoration-primary"
             >
               View all listings
-              <DiagonalArrow className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </motion.div>
         </motion.div>
 
         <motion.div
-          className="mt-12 border-t border-zinc-200/70 pt-12 sm:mt-14 sm:pt-14"
+          className="mt-12 sm:mt-14"
           variants={swiperMotion}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-24px" }}
         >
-          <div className="featured-homes-swiper flex items-center gap-3 sm:gap-4 lg:gap-5">
+          <div className="featured-homes-swiper flex items-center gap-2 sm:gap-3 lg:gap-4">
             <button
               ref={prevRef}
               type="button"
-              className="featured-homes-nav-prev z-20 hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-300/90 bg-white text-foreground/80 shadow-sm transition hover:border-zinc-400 hover:text-foreground sm:flex"
+              className="featured-homes-nav-prev z-20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200/90 bg-white text-zinc-500 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] transition hover:border-zinc-300 hover:text-foreground sm:h-11 sm:w-11"
               aria-label="Previous slide"
             >
               <svg
@@ -167,11 +212,19 @@ export default function FeaturedHomesSection({ homes }) {
               </svg>
             </button>
 
+            <div className="relative min-w-0 flex-1">
+              {/* Right-edge “fog” — fades into section cream so the carousel hints at more content */}
+              <div
+                className="featured-homes-carousel-fog pointer-events-none absolute right-0 top-0 z-10 hidden bottom-12 w-12 sm:block sm:w-14 md:bottom-14 md:w-16 lg:w-20 xl:w-24"
+                aria-hidden
+              />
+
             <Swiper
-              className="featured-homes-swiper-inner min-w-0 flex-1 !pb-11 pt-0.5"
+              className="featured-homes-swiper-inner min-w-0 !pb-12 pt-0.5"
               modules={[Autoplay, Pagination, Navigation]}
-              spaceBetween={20}
+              spaceBetween={16}
               slidesPerView={1}
+              centeredSlides={false}
               loop={loopEnabled}
               speed={600}
               grabCursor
@@ -179,14 +232,14 @@ export default function FeaturedHomesSection({ homes }) {
                 reduceMotion
                   ? false
                   : {
-                      delay: 4800,
+                      delay: 5200,
                       disableOnInteraction: false,
                       pauseOnMouseEnter: true,
                     }
               }
               pagination={{
                 clickable: true,
-                dynamicBullets: homes.length > 3,
+                dynamicBullets: homes.length > 4,
               }}
               navigation={{
                 prevEl: prevRef.current,
@@ -211,67 +264,102 @@ export default function FeaturedHomesSection({ homes }) {
                 }
               }}
               breakpoints={{
-                768: { slidesPerView: 2, spaceBetween: 24 },
-                1280: { slidesPerView: 3, spaceBetween: 28 },
+                768: { slidesPerView: 2, spaceBetween: 20 },
+                1024: { slidesPerView: 3, spaceBetween: 22 },
+                1280: { slidesPerView: 4, spaceBetween: 24 },
               }}
             >
-              {homes.map((home) => (
+              {homes.map((home, index) => (
                 <SwiperSlide key={home.slug} className="!h-auto">
-                  <Link href={`/listings/${home.slug}`} className="group block h-full">
-                    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-zinc-300 hover:shadow-md">
-                      <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-zinc-100">
-                        <Image
-                          src={home.coverImage}
-                          alt=""
-                          fill
-                          className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 380px"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
-                        <div className="absolute inset-x-0 bottom-0 p-5">
-                          <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-white sm:text-xl">
-                            {home.title}
-                          </h3>
+                  <article className="featured-home-card flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-[0_12px_36px_-20px_rgba(44,36,25,0.18)] transition duration-300">
+                    <Link
+                      href={`/listings/${home.slug}`}
+                      className="group relative block min-h-[15.5rem] flex-[3] overflow-hidden sm:min-h-[17rem] lg:min-h-[16.5rem]"
+                    >
+                      {index === 1 ? (
+                        <span className="absolute left-3 top-3 z-20 rounded-full bg-primary px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wide text-white shadow-sm">
+                          Popular
+                        </span>
+                      ) : null}
+                      <Image
+                        src={home.coverImage}
+                        alt=""
+                        fill
+                        className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 45vw, (max-width: 1280px) 32vw, 24vw"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/25 to-black/10" />
+                      <div className="absolute inset-x-0 bottom-0 space-y-2.5 p-4 sm:p-5">
+                        <h3 className="text-lg font-bold leading-snug text-white drop-shadow-sm sm:text-xl">
+                          {home.title}
+                        </h3>
+                        <div className="flex items-center gap-1.5 text-sm text-white/95">
+                          <MapPin className="h-4 w-4 shrink-0" />
+                          <span className="font-medium">{home.location}</span>
                         </div>
-                      </div>
-                      <div className="flex flex-1 flex-col p-5 sm:p-6">
-                        <div className="flex items-start gap-2 border-b border-zinc-100 pb-4">
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-secondary" />
-                          <div className="min-w-0">
-                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-zinc-400">
-                              Location
-                            </p>
-                            <p className="mt-1 text-sm font-medium text-foreground">
-                              {home.location}
-                            </p>
-                          </div>
-                        </div>
-                        <p className="mt-4 line-clamp-2 flex-1 text-sm leading-relaxed text-zinc-500">
-                          {home.description}
-                        </p>
-                        <div className="mt-5 flex items-end justify-between gap-3 pt-4">
-                          <p className="text-lg font-semibold tabular-nums text-foreground sm:text-xl">
-                            {formatAED(home.pricePerNight)}
-                            <span className="text-sm font-normal text-zinc-500">
-                              {" "}
-                              / night
-                            </span>
-                          </p>
-                          <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-primary transition group-hover:border-primary/30 group-hover:bg-primary group-hover:text-white">
-                            <DiagonalArrow className="h-4 w-4" />
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-white/90 sm:text-[0.8125rem]">
+                          <span className="inline-flex items-center gap-1">
+                            <IconBed className="h-3.5 w-3.5 opacity-90" />
+                            {home.bedrooms}{" "}
+                            {home.bedrooms === 1 ? "bed" : "beds"}
+                          </span>
+                          <span className="text-white/40" aria-hidden>
+                            ·
+                          </span>
+                          <span className="inline-flex items-center gap-1">
+                            <IconBath className="h-3.5 w-3.5 opacity-90" />
+                            {home.baths}{" "}
+                            {home.baths === 1 ? "bath" : "baths"}
+                          </span>
+                          <span className="text-white/40" aria-hidden>
+                            ·
+                          </span>
+                          <span className="inline-flex items-center gap-1">
+                            <IconUsers className="h-3.5 w-3.5 opacity-90" />
+                            {home.guests}{" "}
+                            {home.guests === 1 ? "guest" : "guests"}
                           </span>
                         </div>
                       </div>
-                    </article>
-                  </Link>
+                    </Link>
+
+                    <div className="flex flex-col gap-0 border-t border-zinc-100 bg-white px-4 py-3.5 sm:px-5 sm:py-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <Link
+                          href={`/listings/${home.slug}`}
+                          className="min-w-0 text-foreground transition hover:text-primary"
+                        >
+                          <span className="text-lg font-bold tabular-nums sm:text-xl">
+                            {formatAED(home.pricePerNight)}
+                          </span>
+                          <span className="text-sm font-normal text-zinc-500">
+                            {" "}
+                            / night
+                          </span>
+                        </Link>
+                        <button
+                          type="button"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 transition hover:border-primary/40 hover:text-primary"
+                          aria-label={`Save ${home.title}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          <IconHeart className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </article>
                 </SwiperSlide>
               ))}
             </Swiper>
+            </div>
 
             <button
               ref={nextRef}
               type="button"
-              className="featured-homes-nav-next z-20 hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-300/90 bg-white text-foreground/80 shadow-sm transition hover:border-zinc-400 hover:text-foreground sm:flex"
+              className="featured-homes-nav-next z-20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200/90 bg-white text-zinc-500 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] transition hover:border-zinc-300 hover:text-foreground sm:h-11 sm:w-11"
               aria-label="Next slide"
             >
               <svg

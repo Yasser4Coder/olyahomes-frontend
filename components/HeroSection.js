@@ -11,7 +11,89 @@ const heroImage = "/hero-house.png";
 const heroObject =
   "object-cover object-[center_58%] sm:object-[center_52%] md:object-[center_48%] lg:object-[center_42%] xl:object-[center_38%]";
 
+const cloudLeft = "/cloude.png";
+const cloudRight = "/cloude-right.png";
+
 const smoothEase = [0.22, 1, 0.36, 1];
+
+function HeroClouds({ reduceMotion }) {
+  const dur = (s) => (reduceMotion ? 0.01 : s);
+  const slide = (v) => (reduceMotion ? 0 : v);
+  const ease = smoothEase;
+
+  const cloudEffects =
+    "opacity-[0.88] mix-blend-soft-light brightness-[1.08] contrast-[0.96] saturate-[0.55] hue-rotate-[-4deg] drop-shadow-[0_16px_48px_rgba(0,0,0,0.18)]";
+
+  return (
+    <>
+      <motion.div
+        className="pointer-events-none absolute -top-5 left-0 z-[3] w-[min(52vw,19rem)] sm:w-[min(46vw,22rem)] md:w-[min(40vw,26rem)]"
+        initial={{ x: slide(-160), opacity: 0 }}
+        animate={{
+          x: 0,
+          opacity: 1,
+          y: reduceMotion ? 0 : [0, -7, 0],
+        }}
+        transition={{
+          x: { duration: dur(1.2), ease, delay: dur(0.1) },
+          opacity: { duration: dur(0.7), delay: dur(0.05) },
+          y: reduceMotion
+            ? { duration: 0 }
+            : {
+                duration: 6.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+        }}
+        aria-hidden
+      >
+        <div
+          className={`relative aspect-[1.65/1] w-full rotate-180 -scale-x-100 ${cloudEffects}`}
+        >
+          <Image
+            src={cloudLeft}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 52vw, 26rem"
+            className="object-contain object-left-top"
+          />
+        </div>
+      </motion.div>
+      <motion.div
+        className="pointer-events-none absolute right-0 top-0 z-[3] w-[min(52vw,19rem)] sm:w-[min(46vw,22rem)] md:w-[min(40vw,26rem)]"
+        initial={{ x: slide(160), opacity: 0 }}
+        animate={{
+          x: 0,
+          opacity: 1,
+          y: reduceMotion ? 0 : [0, -6, 0],
+        }}
+        transition={{
+          x: { duration: dur(1.2), ease, delay: dur(0.2) },
+          opacity: { duration: dur(0.7), delay: dur(0.05) },
+          y: reduceMotion
+            ? { duration: 0 }
+            : {
+                duration: 7,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.4,
+              },
+        }}
+        aria-hidden
+      >
+        <div className={`relative aspect-[1.65/1] w-full ${cloudEffects}`}>
+          <Image
+            src={cloudRight}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 52vw, 26rem"
+            className="object-contain object-right-top"
+          />
+        </div>
+      </motion.div>
+    </>
+  );
+}
 
 function ArrowRight({ className }) {
   return (
@@ -132,6 +214,8 @@ export default function HeroSection() {
         <div className="hero-grain-drift pointer-events-none" aria-hidden />
         <div className="hero-clarity-layer pointer-events-none" aria-hidden />
       </div>
+
+      <HeroClouds reduceMotion={reduceMotion} />
 
       <HeroCornerAccent />
 

@@ -1,8 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
-import PageHeading from "@/components/PageHeading";
-import { formatAED } from "@/lib/currency";
 import { sampleListings } from "@/lib/sampleListings";
+import ListingsClient from "@/app/listings/ListingsClient";
 
 export const metadata = {
   title: "Browse listings",
@@ -10,48 +7,32 @@ export const metadata = {
 
 export default function ListingsPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <PageHeading
-        title="Browse homes"
-        subtitle="Filter and map views can plug in here later—for now, explore sample properties."
-      />
-      <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {sampleListings.map((home) => (
-          <li key={home.slug}>
-            <article className="overflow-hidden rounded-2xl border border-secondary/15 bg-white shadow-sm transition hover:shadow-md">
-              <div className="relative aspect-[4/3] bg-zinc-200">
-                <Image
-                  src={home.coverImage}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
-                />
-              </div>
-              <div className="p-5">
-                <h2 className="text-lg font-semibold">
-                  <Link
-                    href={`/listings/${home.slug}`}
-                    className="hover:text-primary"
-                  >
-                    {home.title}
-                  </Link>
-                </h2>
-                <p className="mt-1 text-sm text-secondary">{home.location}</p>
-                <p className="mt-2 text-sm text-foreground/65">
-                  {home.guests} guests · {home.bedrooms} bed · {home.baths} bath
-                </p>
-                <p className="mt-4 font-semibold text-primary">
-                  {formatAED(home.pricePerNight)}{" "}
-                  <span className="text-sm font-normal text-foreground/55">
-                    / night
-                  </span>
-                </p>
-              </div>
-            </article>
-          </li>
-        ))}
-      </ul>
+    <div className="bg-[#fdfbf7]">
+      <div className="mx-auto max-w-7xl px-4 pb-14 pt-10 sm:px-6 sm:pb-20 sm:pt-12 md:px-10 lg:px-14">
+        <div className="relative overflow-hidden rounded-3xl border border-secondary/15 bg-white px-6 py-7 shadow-[0_20px_46px_-34px_rgba(44,36,25,0.28)] sm:px-8 sm:py-9">
+          <div
+            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl"
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-secondary/10 blur-3xl"
+            aria-hidden
+          />
+
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-primary">
+            Browse homes
+          </p>
+          <h1 className="font-hero-serif mt-3 text-[clamp(2rem,4.4vw,3.2rem)] font-semibold leading-tight tracking-tight text-foreground">
+            Find your next stay.
+          </h1>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-foreground/60 sm:text-[1.05rem]">
+            Use quick filters to narrow by price, guests, and amenities—then compare
+            listings at a glance.
+          </p>
+        </div>
+
+        <ListingsClient homes={sampleListings} />
+      </div>
     </div>
   );
 }

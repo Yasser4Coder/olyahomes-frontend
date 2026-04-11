@@ -3,26 +3,25 @@
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 
-function DiagonalArrow({ className }) {
+function ArrowRight({ className }) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.2"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={className}
       aria-hidden
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M7 17L17 7M7 7h10v10"
-      />
+      <path d="M5 12h14M13 5l7 7-7 7" />
     </svg>
   );
 }
 
-function IconExplore({ className }) {
+/** Step 1 — document / list */
+function IconDocument({ className }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -34,13 +33,13 @@ function IconExplore({ className }) {
       className={className}
       aria-hidden
     >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.35-4.35" />
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z" />
+      <path d="M14 2v6h6M8 13h8M8 17h6M8 9h3" />
     </svg>
   );
 }
 
-function IconBook({ className }) {
+function IconCalendar({ className }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -58,7 +57,7 @@ function IconBook({ className }) {
   );
 }
 
-function IconPay({ className }) {
+function IconLock({ className }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -70,8 +69,8 @@ function IconPay({ className }) {
       className={className}
       aria-hidden
     >
-      <rect x="2" y="5" width="20" height="14" rx="2" />
-      <path d="M2 10h20" />
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </svg>
   );
 }
@@ -83,19 +82,22 @@ const steps = [
     step: "01",
     title: "Explore & choose",
     body: "Browse curated homes, compare locations and amenities, and save the stays that feel right for your trip.",
-    icon: IconExplore,
+    icon: IconDocument,
+    cta: { href: "/listings", label: "Browse homes" },
   },
   {
     step: "02",
     title: "Book your stay",
     body: "Pick your dates and guest count, then send a booking request. The host confirms availability and house rules.",
-    icon: IconBook,
+    icon: IconCalendar,
+    cta: { href: "/listings", label: "Pick dates" },
   },
   {
     step: "03",
     title: "Pay securely",
     body: "Review your total in AED, complete payment through our secure checkout, and get everything you need before arrival.",
-    icon: IconPay,
+    icon: IconLock,
+    cta: { href: "/how-it-works", label: "How payment works" },
   },
 ];
 
@@ -124,123 +126,95 @@ export default function HomeHowItWorksSection() {
 
   return (
     <section
-      className="relative z-0 isolate overflow-hidden border-t border-secondary/15 bg-linear-to-b from-white/60 to-neutral"
+      className="relative z-0 isolate overflow-hidden border-t border-secondary/20 bg-[#fdfbf7]"
       aria-labelledby="how-it-works-home-heading"
     >
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 bg-linear-to-t from-zinc-900/6 to-transparent"
-        aria-hidden
-      />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pl-5 pt-10 sm:px-6 sm:pb-20 sm:pl-7 sm:pt-12 md:px-10 md:pl-10 md:pt-14 lg:px-14 lg:pb-24 lg:pl-12 lg:pt-32">
-        <motion.div
-          className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between sm:gap-12"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.08 } },
-          }}
-        >
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-12 md:px-10 md:pt-14 lg:px-14 lg:pb-24 lg:pt-24 xl:pt-28">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16 xl:gap-20">
           <motion.div
+            className="flex max-w-xl gap-4 sm:gap-5 lg:col-span-5 xl:col-span-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
             variants={headerMotion}
-            className="flex max-w-xl gap-5 sm:gap-6"
           >
             <div
-              className="hidden w-1 shrink-0 rounded-full bg-primary sm:block"
+              className="mt-1 w-px shrink-0 rounded-full bg-primary/45 sm:w-[3px]"
               aria-hidden
             />
-            <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-secondary">
+            <div className="min-w-0">
+              <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-secondary">
                 How it works
               </p>
               <h2
                 id="how-it-works-home-heading"
-                className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+                className="font-hero-serif mt-3 text-[clamp(1.75rem,4vw,2.75rem)] font-semibold leading-[1.15] tracking-tight text-foreground"
               >
-                From browse to booking in three calm steps
+                From browsing to booking in three calm steps
               </h2>
-              <p className="mt-3 text-base leading-relaxed text-foreground/60">
+              <p className="mt-4 text-base leading-relaxed text-foreground/55 sm:text-[1.05rem]">
                 Explore homes you love, lock in your dates, then pay safely—all
                 in one straightforward flow.
               </p>
+              <Link
+                href="/how-it-works"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:text-primary/85"
+              >
+                Full guide
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </motion.div>
-          <motion.div variants={headerMotion} className="shrink-0 sm:pt-1">
-            <Link
-              href="/how-it-works"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary underline decoration-primary/30 decoration-2 underline-offset-4 transition hover:decoration-primary"
-            >
-              Full guide
-              <DiagonalArrow className="h-4 w-4" />
-            </Link>
-          </motion.div>
-        </motion.div>
 
-        <motion.ol
-          className="mt-14 grid gap-8 lg:mt-16 lg:grid-cols-3 lg:gap-10"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: reduceMotion ? 0 : 0.12,
-                delayChildren: reduceMotion ? 0 : 0.05,
+          <motion.ol
+            className="grid gap-6 sm:gap-8 lg:col-span-7 lg:grid-cols-3 xl:col-span-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: reduceMotion ? 0 : 0.1,
+                  delayChildren: reduceMotion ? 0 : 0.06,
+                },
               },
-            },
-          }}
-        >
-          {steps.map((s, i) => {
-            const Icon = s.icon;
-            return (
-              <motion.li key={s.step} variants={cardMotion} className="relative">
-                {i < steps.length - 1 ? (
-                  <div
-                    className="pointer-events-none absolute left-[calc(50%+2.5rem)] top-14 hidden h-px w-[calc(100%-2.5rem)] bg-linear-to-r from-primary/35 via-secondary/25 to-transparent lg:block xl:left-[calc(50%+3rem)] xl:top-16 xl:w-[calc(100%-3rem)]"
-                    aria-hidden
-                  />
-                ) : null}
-                <article className="relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-zinc-200/90 bg-white p-6 shadow-xl shadow-zinc-900/10 ring-1 ring-zinc-900/4 sm:p-8">
-                  <div className="flex items-start justify-between gap-4">
-                    <span className="font-mono text-3xl font-bold tabular-nums text-primary/90 sm:text-4xl">
-                      {s.step}
-                    </span>
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
-                      <Icon className="h-6 w-6" />
-                    </span>
-                  </div>
-                  <h3 className="mt-6 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-                    {s.title}
-                  </h3>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-zinc-600 sm:text-[0.95rem]">
-                    {s.body}
-                  </p>
-                  {i === 0 ? (
+            }}
+          >
+            {steps.map((s) => {
+              const Icon = s.icon;
+              return (
+                <motion.li key={s.step} variants={cardMotion} className="min-w-0">
+                  <article className="flex h-full flex-col rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-[0_18px_40px_-24px_rgba(44,36,25,0.18)] sm:p-7">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-white">
+                        <span className="font-hero-serif text-lg font-semibold tabular-nums text-primary sm:text-xl">
+                          {s.step}
+                        </span>
+                      </div>
+                      <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full border-2 border-primary/40 bg-white text-primary">
+                        <Icon className="h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" />
+                      </div>
+                    </div>
+                    <h3 className="mt-7 text-lg font-bold tracking-tight text-foreground sm:text-xl">
+                      {s.title}
+                    </h3>
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-zinc-600 sm:text-[0.9375rem]">
+                      {s.body}
+                    </p>
                     <Link
-                      href="/listings"
-                      className="mt-6 inline-flex text-sm font-semibold text-primary transition hover:text-primary/80"
+                      href={s.cta.href}
+                      className="mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition hover:text-primary/85"
                     >
-                      Browse homes →
+                      {s.cta.label}
+                      <ArrowRight className="h-4 w-4" />
                     </Link>
-                  ) : null}
-                  {i === 1 ? (
-                    <p className="mt-6 text-xs font-medium uppercase tracking-wider text-zinc-400">
-                      Request → host confirms
-                    </p>
-                  ) : null}
-                  {i === 2 ? (
-                    <p className="mt-6 text-xs font-medium uppercase tracking-wider text-zinc-400">
-                      Checkout in AED
-                    </p>
-                  ) : null}
-                </article>
-              </motion.li>
-            );
-          })}
-        </motion.ol>
+                  </article>
+                </motion.li>
+              );
+            })}
+          </motion.ol>
+        </div>
       </div>
     </section>
   );

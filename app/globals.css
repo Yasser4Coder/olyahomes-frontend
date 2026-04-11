@@ -153,15 +153,88 @@ input[type="reset"]:disabled,
   }
 }
 
+/* Featured homes — right-edge fade into section background */
+.featured-homes-carousel-fog {
+  background: linear-gradient(
+    to left,
+    rgba(253, 251, 247, 0.55) 0%,
+    rgba(253, 251, 247, 0.22) 18%,
+    rgba(253, 251, 247, 0.06) 38%,
+    rgba(253, 251, 247, 0) 62%
+  );
+}
+
 /* Featured homes Swiper — bullets + pagination placement */
 .featured-homes-swiper-inner .swiper-pagination-bullet {
-  background: var(--color-secondary);
-  opacity: 0.35;
+  background: rgb(120 113 108);
+  opacity: 0.25;
+  width: 8px;
+  height: 8px;
 }
 .featured-homes-swiper-inner .swiper-pagination-bullet-active {
   background: var(--color-primary);
   opacity: 1;
+  width: 8px;
+  height: 8px;
 }
 .featured-homes-swiper-inner .swiper-pagination {
   bottom: 0;
+}
+
+/* Testimonials — edge glows + card frame use site primary/secondary */
+.testimonials-glow-left {
+  background: radial-gradient(
+    ellipse 100% 120% at 0% 50%,
+    color-mix(in srgb, var(--color-primary) 52%, transparent),
+    color-mix(in srgb, var(--color-secondary) 24%, transparent) 44%,
+    transparent 72%
+  );
+}
+.testimonials-glow-right {
+  background: radial-gradient(
+    ellipse 100% 120% at 100% 50%,
+    color-mix(in srgb, var(--color-primary) 52%, transparent),
+    color-mix(in srgb, var(--color-secondary) 24%, transparent) 44%,
+    transparent 72%
+  );
+}
+.testimonials-glow-strip {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-primary) 22%, transparent),
+    transparent 18%,
+    transparent 82%,
+    color-mix(in srgb, var(--color-primary) 22%, transparent)
+  );
+}
+.testimonials-card-frame {
+  background: linear-gradient(
+    to bottom right,
+    color-mix(in srgb, var(--color-primary) 45%, white),
+    var(--color-primary),
+    var(--color-secondary),
+    rgb(24 20 10)
+  );
+}
+
+/* Testimonials carousel */
+.testimonials-swiper-inner .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.28);
+  opacity: 1;
+  width: 8px;
+  height: 8px;
+}
+.testimonials-swiper-inner .swiper-pagination-bullet-active {
+  background: var(--color-primary);
+}
+.testimonials-swiper-inner .swiper-pagination {
+  bottom: 0;
+}
+
+/* Active slide — thin bronze/gold frame like reference */
+.featured-homes-swiper-inner .swiper-slide-active .featured-home-card {
+  border-color: rgb(170 99 37 / 0.45);
+  box-shadow:
+    0 0 0 1px rgb(170 99 37 / 0.35),
+    0 20px 44px -22px rgba(44, 36, 25, 0.22);
 }
