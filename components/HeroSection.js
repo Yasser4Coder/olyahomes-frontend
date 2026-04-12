@@ -194,7 +194,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative -mt-16 flex min-h-svh flex-col bg-zinc-900 max-md:pt-32 md:pt-16 max-lg:min-h-dvh"
+      className="relative -mt-[var(--site-header-offset,4rem)] flex min-h-svh flex-col bg-zinc-900 max-md:pt-[calc(var(--site-header-offset,4rem)+3.5rem)] md:pt-16 max-lg:min-h-dvh"
       aria-label="Welcome"
     >
       <div className="absolute inset-0 z-0 overflow-hidden">

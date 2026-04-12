@@ -1,0 +1,18 @@
+# Apache: clean URLs for Next static export (`out/`).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # /path -> /path/ when /path/index.html exists (trailingSlash builds).
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+  RewriteRule ^(.*)$ $1/ [R=301,L]
+
+  # /path -> /path.html when that file exists (covers non-trailingSlash exports).
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
+  RewriteRule ^(.*)$ $1.html [L]
+</IfModule>
+
+DirectoryIndex index.html

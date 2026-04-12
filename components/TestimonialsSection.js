@@ -48,7 +48,7 @@ function StarRow({ count = 5 }) {
       {Array.from({ length: count }, (_, i) => (
         <svg
           key={i}
-          className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4"
+          className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4"
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden
@@ -63,18 +63,18 @@ function StarRow({ count = 5 }) {
 function AvatarBlock({ avatar }) {
   if (avatar.type === "couple") {
     return (
-      <div className="flex shrink-0 -space-x-2.5">
-        <span className="relative z-2 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-600 text-xs font-semibold uppercase tracking-wide text-white ring-2 ring-primary/40">
+      <div className="flex shrink-0 -space-x-2 sm:-space-x-2.5">
+        <span className="relative z-2 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-600 text-[0.65rem] font-semibold uppercase tracking-wide text-white ring-2 ring-primary/40 sm:h-11 sm:w-11 sm:text-xs">
           {avatar.letters[0]}
         </span>
-        <span className="relative z-1 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-500 text-xs font-semibold uppercase tracking-wide text-white ring-2 ring-primary/40">
+        <span className="relative z-1 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-500 text-[0.65rem] font-semibold uppercase tracking-wide text-white ring-2 ring-primary/40 sm:h-11 sm:w-11 sm:text-xs">
           {avatar.letters[1]}
         </span>
       </div>
     );
   }
   return (
-    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-zinc-600 text-xs font-semibold uppercase tracking-wide text-white ring-2 ring-primary/40">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-600 text-[0.65rem] font-semibold uppercase tracking-wide text-white ring-2 ring-primary/40 sm:h-11 sm:w-11 sm:text-xs">
       {avatar.initials}
     </span>
   );
@@ -96,7 +96,9 @@ export default function TestimonialsSection() {
     },
   };
 
-  const loopEnabled = testimonials.length >= 3;
+  /** Swiper loop needs enough duplicated slides; 3 testimonials → loop off. */
+  const maxSlidesPerView = 3;
+  const loopEnabled = testimonials.length >= 4;
 
   return (
     <section
@@ -168,16 +170,16 @@ export default function TestimonialsSection() {
           </motion.div>
 
           <div className="mt-12 sm:mt-14">
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+            <div className="relative md:flex md:items-center md:gap-3 lg:gap-4">
               <button
                 ref={prevRef}
                 type="button"
-                className="testimonials-nav-prev z-20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-black/30 text-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.35)] backdrop-blur-sm transition hover:border-primary/60 hover:bg-black/45 hover:text-white sm:h-11 sm:w-11"
+                className="testimonials-nav-prev absolute left-1.5 top-[42%] z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent text-white shadow-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] transition hover:bg-white/15 hover:text-white md:static md:left-auto md:top-auto md:z-20 md:h-11 md:w-11 md:shrink-0 md:translate-y-0 md:border md:border-primary/40 md:bg-black/30 md:text-white/95 md:shadow-[0_4px_20px_rgba(0,0,0,0.35)] md:backdrop-blur-sm md:drop-shadow-none md:hover:border-primary/60 md:hover:bg-black/45 md:hover:text-white"
                 aria-label="Previous slide"
               >
                 <svg
                   viewBox="0 0 24 24"
-                  className="h-5 w-5"
+                  className="h-4 w-4 md:h-5 md:w-5"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -191,12 +193,14 @@ export default function TestimonialsSection() {
                 </svg>
               </button>
 
+              <div className="relative min-w-0 flex-1 md:min-w-0">
               <Swiper
                 className="testimonials-swiper-inner min-w-0 flex-1 pt-0.5 pb-11!"
                 modules={[Autoplay, Pagination, Navigation]}
-                spaceBetween={16}
-                slidesPerView={1}
+                spaceBetween={10}
+                slidesPerView={2}
                 loop={loopEnabled}
+                watchOverflow
                 speed={600}
                 grabCursor
                 autoplay={
@@ -238,17 +242,19 @@ export default function TestimonialsSection() {
               >
                 {testimonials.map((t) => (
                   <SwiperSlide key={t.name} className="h-auto!">
-                    <div className="testimonials-card-frame h-full rounded-2xl p-px shadow-[0_16px_48px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.18)]">
-                      <blockquote className="flex h-full flex-col rounded-[15px] bg-linear-to-br from-zinc-800/98 to-zinc-950 p-6 sm:rounded-[calc(1rem-1px)] sm:p-7">
+                    <div className="testimonials-card-frame h-full rounded-xl p-px shadow-[0_16px_48px_-20px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.18)] sm:rounded-2xl">
+                      <blockquote className="flex h-full flex-col rounded-[11px] bg-linear-to-br from-zinc-800/98 to-zinc-950 p-3.5 sm:rounded-[15px] sm:p-7">
                         <StarRow count={t.rating} />
-                        <p className="mt-5 flex-1 text-sm leading-relaxed text-white/95 sm:text-[0.9375rem]">
+                        <p className="mt-3 flex-1 text-[0.7rem] leading-snug text-white/95 line-clamp-6 sm:mt-5 sm:line-clamp-none sm:text-[0.9375rem] sm:leading-relaxed">
                           “{t.quote}”
                         </p>
-                        <footer className="mt-8 flex items-center gap-3.5 border-t border-white/10 pt-6">
+                        <footer className="mt-4 flex items-center gap-2 border-t border-white/10 pt-3.5 sm:mt-8 sm:gap-3.5 sm:pt-6">
                           <AvatarBlock avatar={t.avatar} />
                           <div className="min-w-0">
-                            <p className="font-bold text-white">{t.name}</p>
-                            <p className="mt-1 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-zinc-500">
+                            <p className="truncate text-xs font-bold text-white sm:text-base">
+                              {t.name}
+                            </p>
+                            <p className="mt-0.5 truncate text-[0.55rem] font-medium uppercase tracking-[0.12em] text-zinc-500 sm:mt-1 sm:text-[0.65rem] sm:tracking-[0.14em]">
                               {t.meta}
                             </p>
                           </div>
@@ -258,16 +264,17 @@ export default function TestimonialsSection() {
                   </SwiperSlide>
                 ))}
               </Swiper>
+              </div>
 
               <button
                 ref={nextRef}
                 type="button"
-                className="testimonials-nav-next z-20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-black/30 text-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.35)] backdrop-blur-sm transition hover:border-primary/60 hover:bg-black/45 hover:text-white sm:h-11 sm:w-11"
+                className="testimonials-nav-next absolute right-1.5 top-[42%] z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent text-white shadow-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] transition hover:bg-white/15 hover:text-white md:static md:right-auto md:top-auto md:z-20 md:h-11 md:w-11 md:shrink-0 md:translate-y-0 md:border md:border-primary/40 md:bg-black/30 md:text-white/95 md:shadow-[0_4px_20px_rgba(0,0,0,0.35)] md:backdrop-blur-sm md:drop-shadow-none md:hover:border-primary/60 md:hover:bg-black/45 md:hover:text-white"
                 aria-label="Next slide"
               >
                 <svg
                   viewBox="0 0 24 24"
-                  className="h-5 w-5"
+                  className="h-4 w-4 md:h-5 md:w-5"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"

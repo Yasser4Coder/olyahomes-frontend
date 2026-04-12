@@ -133,7 +133,9 @@ export default function FeaturedHomesSection({ homes }) {
     },
   };
 
-  const loopEnabled = homes.length >= 3;
+  /** Loop needs enough slides for the widest breakpoint (slidesPerView 4 at 1280px+). */
+  const maxSlidesPerView = 4;
+  const loopEnabled = homes.length >= maxSlidesPerView * 2;
 
   return (
     <section
@@ -189,16 +191,16 @@ export default function FeaturedHomesSection({ homes }) {
           whileInView="visible"
           viewport={{ once: true, margin: "-24px" }}
         >
-          <div className="featured-homes-swiper flex items-center gap-2 sm:gap-3 lg:gap-4">
+          <div className="featured-homes-swiper relative md:flex md:items-center md:gap-3 lg:gap-4">
             <button
               ref={prevRef}
               type="button"
-              className="featured-homes-nav-prev z-20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200/90 bg-white text-zinc-500 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] transition hover:border-zinc-300 hover:text-foreground sm:h-11 sm:w-11"
+              className="featured-homes-nav-prev absolute left-1.5 top-[40%] z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent text-white shadow-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition hover:bg-white/15 hover:text-white md:static md:left-auto md:top-auto md:z-20 md:h-11 md:w-11 md:shrink-0 md:translate-y-0 md:border md:border-zinc-200/90 md:bg-white md:text-zinc-500 md:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] md:drop-shadow-none md:hover:border-zinc-300 md:hover:bg-white md:hover:text-foreground"
               aria-label="Previous slide"
             >
               <svg
                 viewBox="0 0 24 24"
-                className="h-5 w-5"
+                className="h-4 w-4 md:h-5 md:w-5"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -212,7 +214,7 @@ export default function FeaturedHomesSection({ homes }) {
               </svg>
             </button>
 
-            <div className="relative min-w-0 flex-1">
+            <div className="relative min-w-0 flex-1 md:min-w-0">
               {/* Right-edge “fog” — fades into section cream so the carousel hints at more content */}
               <div
                 className="featured-homes-carousel-fog pointer-events-none absolute right-0 top-0 z-10 hidden bottom-12 w-12 sm:block sm:w-14 md:bottom-14 md:w-16 lg:w-20 xl:w-24"
@@ -222,10 +224,11 @@ export default function FeaturedHomesSection({ homes }) {
             <Swiper
               className="featured-homes-swiper-inner min-w-0 !pb-12 pt-0.5"
               modules={[Autoplay, Pagination, Navigation]}
-              spaceBetween={16}
-              slidesPerView={1}
+              spaceBetween={10}
+              slidesPerView={2}
               centeredSlides={false}
               loop={loopEnabled}
+              watchOverflow
               speed={600}
               grabCursor
               autoplay={
@@ -271,13 +274,13 @@ export default function FeaturedHomesSection({ homes }) {
             >
               {homes.map((home, index) => (
                 <SwiperSlide key={home.slug} className="!h-auto">
-                  <article className="featured-home-card flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-[0_12px_36px_-20px_rgba(44,36,25,0.18)] transition duration-300">
+                  <article className="featured-home-card flex h-full flex-col overflow-hidden rounded-xl border border-zinc-200/90 bg-white shadow-[0_12px_36px_-20px_rgba(44,36,25,0.18)] transition duration-300 sm:rounded-2xl">
                     <Link
                       href={`/listings/${home.slug}`}
-                      className="group relative block min-h-[15.5rem] flex-[3] overflow-hidden sm:min-h-[17rem] lg:min-h-[16.5rem]"
+                      className="group relative block min-h-[11.25rem] flex-[3] overflow-hidden sm:min-h-[17rem] lg:min-h-[16.5rem]"
                     >
                       {index === 1 ? (
-                        <span className="absolute left-3 top-3 z-20 rounded-full bg-primary px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wide text-white shadow-sm">
+                        <span className="absolute left-2 top-2 z-20 rounded-full bg-primary px-2 py-0.5 text-[0.55rem] font-bold uppercase tracking-wide text-white shadow-sm sm:left-3 sm:top-3 sm:px-3 sm:py-1 sm:text-[0.65rem]">
                           Popular
                         </span>
                       ) : null}
@@ -286,36 +289,36 @@ export default function FeaturedHomesSection({ homes }) {
                         alt=""
                         fill
                         className="object-cover transition duration-500 group-hover:scale-[1.04]"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 45vw, (max-width: 1280px) 32vw, 24vw"
+                        sizes="(max-width: 768px) 48vw, (max-width: 1024px) 45vw, (max-width: 1280px) 32vw, 24vw"
                       />
                       <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/25 to-black/10" />
-                      <div className="absolute inset-x-0 bottom-0 space-y-2.5 p-4 sm:p-5">
-                        <h3 className="text-lg font-bold leading-snug text-white drop-shadow-sm sm:text-xl">
+                      <div className="absolute inset-x-0 bottom-0 space-y-1.5 p-2.5 sm:space-y-2.5 sm:p-5">
+                        <h3 className="line-clamp-2 text-xs font-bold leading-snug text-white drop-shadow-sm sm:line-clamp-none sm:text-lg sm:leading-snug md:text-xl">
                           {home.title}
                         </h3>
-                        <div className="flex items-center gap-1.5 text-sm text-white/95">
-                          <MapPin className="h-4 w-4 shrink-0" />
-                          <span className="font-medium">{home.location}</span>
+                        <div className="flex items-center gap-1 text-[0.65rem] text-white/95 sm:gap-1.5 sm:text-sm">
+                          <MapPin className="h-3 w-3 shrink-0 sm:h-4 sm:w-4" />
+                          <span className="truncate font-medium">{home.location}</span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-white/90 sm:text-[0.8125rem]">
-                          <span className="inline-flex items-center gap-1">
-                            <IconBed className="h-3.5 w-3.5 opacity-90" />
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[0.6rem] font-medium text-white/90 sm:gap-x-3 sm:gap-y-1 sm:text-[0.8125rem]">
+                          <span className="inline-flex items-center gap-0.5 sm:gap-1">
+                            <IconBed className="h-3 w-3 opacity-90 sm:h-3.5 sm:w-3.5" />
                             {home.bedrooms}{" "}
                             {home.bedrooms === 1 ? "bed" : "beds"}
                           </span>
                           <span className="text-white/40" aria-hidden>
                             ·
                           </span>
-                          <span className="inline-flex items-center gap-1">
-                            <IconBath className="h-3.5 w-3.5 opacity-90" />
+                          <span className="inline-flex items-center gap-0.5 sm:gap-1">
+                            <IconBath className="h-3 w-3 opacity-90 sm:h-3.5 sm:w-3.5" />
                             {home.baths}{" "}
                             {home.baths === 1 ? "bath" : "baths"}
                           </span>
                           <span className="text-white/40" aria-hidden>
                             ·
                           </span>
-                          <span className="inline-flex items-center gap-1">
-                            <IconUsers className="h-3.5 w-3.5 opacity-90" />
+                          <span className="inline-flex items-center gap-0.5 sm:gap-1">
+                            <IconUsers className="h-3 w-3 opacity-90 sm:h-3.5 sm:w-3.5" />
                             {home.guests}{" "}
                             {home.guests === 1 ? "guest" : "guests"}
                           </span>
@@ -323,30 +326,30 @@ export default function FeaturedHomesSection({ homes }) {
                       </div>
                     </Link>
 
-                    <div className="flex flex-col gap-0 border-t border-zinc-100 bg-white px-4 py-3.5 sm:px-5 sm:py-4">
-                      <div className="flex items-center justify-between gap-3">
+                    <div className="flex flex-col gap-0 border-t border-zinc-100 bg-white px-2.5 py-2.5 sm:px-5 sm:py-4">
+                      <div className="flex items-center justify-between gap-2 sm:gap-3">
                         <Link
                           href={`/listings/${home.slug}`}
                           className="min-w-0 text-foreground transition hover:text-primary"
                         >
-                          <span className="text-lg font-bold tabular-nums sm:text-xl">
+                          <span className="text-sm font-bold tabular-nums sm:text-lg md:text-xl">
                             {formatAED(home.pricePerNight)}
                           </span>
-                          <span className="text-sm font-normal text-zinc-500">
+                          <span className="text-[0.65rem] font-normal text-zinc-500 sm:text-sm">
                             {" "}
                             / night
                           </span>
                         </Link>
                         <button
                           type="button"
-                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 transition hover:border-primary/40 hover:text-primary"
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 transition hover:border-primary/40 hover:text-primary sm:h-10 sm:w-10"
                           aria-label={`Save ${home.title}`}
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
                           }}
                         >
-                          <IconHeart className="h-5 w-5" />
+                          <IconHeart className="h-4 w-4 sm:h-5 sm:w-5" />
                         </button>
                       </div>
                     </div>
@@ -359,12 +362,12 @@ export default function FeaturedHomesSection({ homes }) {
             <button
               ref={nextRef}
               type="button"
-              className="featured-homes-nav-next z-20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-200/90 bg-white text-zinc-500 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] transition hover:border-zinc-300 hover:text-foreground sm:h-11 sm:w-11"
+              className="featured-homes-nav-next absolute right-1.5 top-[40%] z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent text-white shadow-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition hover:bg-white/15 hover:text-white md:static md:right-auto md:top-auto md:z-20 md:h-11 md:w-11 md:shrink-0 md:translate-y-0 md:border md:border-zinc-200/90 md:bg-white md:text-zinc-500 md:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)] md:drop-shadow-none md:hover:border-zinc-300 md:hover:bg-white md:hover:text-foreground"
               aria-label="Next slide"
             >
               <svg
                 viewBox="0 0 24 24"
-                className="h-5 w-5"
+                className="h-4 w-4 md:h-5 md:w-5"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"

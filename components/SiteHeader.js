@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const defaultNav = [
   { href: "/listings", label: "Browse homes" },
@@ -25,27 +25,47 @@ const homeNav = [
 /** Past this scroll offset on home, use the same solid bar as inner pages (readable on white sections). */
 const HOME_SCROLL_SOLID = 48;
 
+/** `usePathname()` includes a trailing slash when `trailingSlash: true` in next.config. */
+function pathnameKey(pathname) {
+  if (!pathname || pathname === "/") return "/";
+  return pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+}
+
 export default function SiteHeader() {
   const pathname = usePathname();
-  const isLandingHome = pathname === "/";
-  const isListings = pathname?.startsWith("/listings");
-  const isAboutPage = pathname === "/about";
-  const isContactPage = pathname === "/contact";
-  const isHowItWorksPage = pathname === "/how-it-works";
+  const key = pathnameKey(pathname);
+  const isLandingHome = key === "/";
+  const isListings = key.startsWith("/listings");
+  const isAboutPage = key === "/about";
+  const isContactPage = key === "/contact";
+  const isHowItWorksPage = key === "/how-it-works";
+  const isLoginPage = key === "/login";
+  const isSignupPage = key === "/signup";
+  const isTermsPage = key === "/terms";
+  const isPrivacyPage = key === "/privacy";
   /** Same header chrome + nav as home & listings (Home / Browse / …), incl. mobile second row. */
   const usesHomeNavItems =
     isLandingHome ||
     isListings ||
     isAboutPage ||
     isContactPage ||
-    isHowItWorksPage;
+    isHowItWorksPage ||
+    isLoginPage ||
+    isSignupPage ||
+    isTermsPage ||
+    isPrivacyPage;
   const [homeScrolled, setHomeScrolled] = useState(false);
+  const headerRef = useRef(null);
   const items = usesHomeNavItems ? homeNav : defaultNav;
   const solidBar =
     isListings ||
     isAboutPage ||
     isContactPage ||
     isHowItWorksPage ||
+    isLoginPage ||
+    isSignupPage ||
+    isTermsPage ||
+    isPrivacyPage ||
     !isLandingHome ||
     homeScrolled;
 
@@ -62,12 +82,38 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isLandingHome]);
 
+  /** Keep <main> padding in sync with actual header height (mobile has a second nav row). */
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const apply = () => {
+      document.documentElement.style.setProperty(
+        "--site-header-offset",
+        `${header.offsetHeight}px`,
+      );
+    };
+
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(header);
+    window.addEventListener("resize", apply);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", apply);
+    };
+  }, [key, solidBar, usesHomeNavItems]);
+
   const headerChrome = solidBar
     ? "bg-neutral/92 shadow-[inset_0_1px_0_0_rgb(255_255_255_/_0.7)] backdrop-blur-2xl backdrop-saturate-150 supports-backdrop-filter:bg-neutral/[0.52]"
     : "bg-transparent";
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 ${headerChrome}`}>
+    <header
+      ref={headerRef}
+      className={`fixed inset-x-0 top-0 z-50 ${headerChrome}`}
+    >
       <div
         className={`mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 ${
           isLandingHome && !solidBar
@@ -150,13 +196,23 @@ export default function SiteHeader() {
             <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3 md:justify-self-end">
               <Link
                 href="/login"
-                className="whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium text-secondary hover:bg-secondary/10 sm:px-3"
+                aria-current={isLoginPage ? "page" : undefined}
+                className={`whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium sm:px-3 ${
+                  isLoginPage
+                    ? "bg-secondary/15 text-foreground"
+                    : "text-secondary hover:bg-secondary/10"
+                }`}
               >
                 Log in
               </Link>
               <Link
                 href="/signup"
-                className="inline-flex min-h-10 shrink-0 items-center justify-center whitespace-nowrap rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-md shadow-primary/25 ring-1 ring-primary/20 transition hover:bg-primary/90 active:scale-[0.98] sm:min-h-0 sm:px-5"
+                aria-current={isSignupPage ? "page" : undefined}
+                className={`inline-flex min-h-10 shrink-0 items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold shadow-md ring-1 transition active:scale-[0.98] sm:min-h-0 sm:px-5 ${
+                  isSignupPage
+                    ? "bg-secondary/20 text-foreground ring-secondary/25"
+                    : "bg-primary text-white shadow-primary/25 ring-primary/20 hover:bg-primary/90"
+                }`}
               >
                 Sign up
               </Link>
@@ -214,7 +270,7 @@ export default function SiteHeader() {
 
       {usesHomeNavItems ? (
         <nav
-          className={`flex gap-2 overflow-x-auto px-4 py-2 md:hidden ${
+          className={`flex gap-2 overflow-x-auto bg-transparent px-4 py-2 md:hidden ${
             solidBar
               ? "border-t border-secondary/15"
               : "border-t border-white/[0.14]"
