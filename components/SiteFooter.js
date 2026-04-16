@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { APP_DISPLAY_NAME } from "@/lib/brand";
 
 const columns = [
   {
@@ -32,6 +33,7 @@ const columns = [
     links: [
       { href: "/privacy", label: "Privacy policy" },
       { href: "/terms", label: "Terms of use" },
+      { href: "/policy", label: "Refund policy" },
       { href: "/contact", label: "Contact" },
     ],
   },
@@ -98,11 +100,12 @@ export default function SiteFooter() {
                 height={40}
                 className="h-10 w-10 object-contain drop-shadow-sm"
               />
-              <span className="text-lg font-bold tracking-tight">Olyahomes</span>
+              <span className="text-lg font-bold tracking-tight">{APP_DISPLAY_NAME}</span>
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-zinc-400">
-              Curated stays and trusted hosts. Find a home that fits your trip,
-              book in a few steps, and pay securely—all in AED.
+              {APP_DISPLAY_NAME} connects guests with curated holiday homes and hosts
+              with clear tools. Find a stay that fits your trip, book in a few steps,
+              and pay securely—all in AED.
             </p>
             <ul className="mt-6 flex flex-wrap gap-2 text-xs font-medium text-zinc-500">
               <li className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
@@ -159,7 +162,7 @@ export default function SiteFooter() {
 
         <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-zinc-500">
-            © {year} Olyahomes. All rights reserved.
+            © {year} {APP_DISPLAY_NAME}. All rights reserved.
           </p>
           <p className="text-xs text-zinc-500">
             A calm booking experience for modern travellers and hosts.

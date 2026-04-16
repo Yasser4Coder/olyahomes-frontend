@@ -1,5 +1,7 @@
 "use client";
 
+import { getApiBase } from "@/lib/api";
+
 function IconGoogle({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden>
@@ -23,16 +25,26 @@ function IconGoogle({ className }) {
   );
 }
 
+/** Hide only when explicitly disabled (e.g. builds with no Google on the API). */
+const googleDisabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH === "0";
+
 /**
- * Placeholder for Google OAuth — wire `onClick` or replace with your provider later.
+ * Redirects the browser to the API Google OAuth start URL (sets HTTP-only cookies on callback).
  * @param {{ mode?: "login" | "signup" }} props
  */
 export default function GoogleAuthButton({ mode = "login" }) {
   const label = mode === "signup" ? "Sign up with Google" : "Log in with Google";
 
+  if (googleDisabled) {
+    return null;
+  }
+
   return (
     <button
       type="button"
+      onClick={() => {
+        window.location.assign(`${getApiBase()}/api/v1/auth/google`);
+      }}
       className="flex w-full items-center justify-center gap-3 rounded-xl border border-secondary/25 bg-white py-3 text-[15px] font-semibold text-foreground shadow-sm transition hover:border-secondary/40 hover:bg-neutral/40 active:scale-[0.99]"
       aria-label={label}
     >
@@ -43,6 +55,9 @@ export default function GoogleAuthButton({ mode = "login" }) {
 }
 
 function AuthEmailDivider() {
+  if (googleDisabled) {
+    return null;
+  }
   return (
     <div className="relative py-1">
       <div className="absolute inset-0 flex items-center" aria-hidden>

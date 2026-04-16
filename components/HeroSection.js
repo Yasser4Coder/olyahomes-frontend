@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import HeroCornerAccent from "@/components/HeroCornerAccent";
 import HeroGlassFeaturedCard from "@/components/HeroGlassFeaturedCard";
+import { APP_DISPLAY_NAME } from "@/lib/brand";
 
 const heroImage = "/hero-house.png";
 
@@ -149,7 +150,7 @@ function IconCalendar({ className }) {
   );
 }
 
-function IconHeadset({ className }) {
+function IconCardLock({ className }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -159,10 +160,11 @@ function IconHeadset({ className }) {
       className={className}
       aria-hidden
     >
+      <rect x="3" y="6" width="18" height="12" rx="2" />
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M3 18v-3a9 9 0 0 1 18 0v3M7 18v3M17 18v3M7 14h-.5A2.5 2.5 0 0 0 4 16.5V18h3v-4Zm10 0h.5A2.5 2.5 0 0 1 20 16.5V18h-3v-4Z"
+        d="M8 14h.01M12 14h.01M16 14h.01M9 18h6"
       />
     </svg>
   );
@@ -171,18 +173,18 @@ function IconHeadset({ className }) {
 const valueProps = [
   {
     title: "Curated homes",
-    sub: "Quality & comfort",
+    sub: "Clear listings & photos",
     Icon: IconHome,
   },
   {
-    title: "Seamless booking",
-    sub: "Fast & secure",
+    title: "Dates & guests",
+    sub: "Pick nights, then checkout",
     Icon: IconCalendar,
   },
   {
-    title: "24/7 support",
-    sub: "We're here for you",
-    Icon: IconHeadset,
+    title: "Secure payments",
+    sub: "Totals in AED at checkout",
+    Icon: IconCardLock,
   },
 ];
 
@@ -194,13 +196,13 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative -mt-[var(--site-header-offset,4rem)] flex min-h-svh flex-col bg-zinc-900 max-md:pt-[calc(var(--site-header-offset,4rem)+3.5rem)] md:pt-16 max-lg:min-h-dvh"
+      className="relative isolate overflow-x-hidden -mt-[var(--site-header-offset,4rem)] flex min-h-svh flex-col bg-zinc-900 max-md:pt-[calc(var(--site-header-offset,4rem)+3.5rem)] md:pt-16 max-lg:min-h-dvh"
       aria-label="Welcome"
     >
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
           src={heroImage}
-          alt="Olyahomes — modern home exterior"
+          alt={`${APP_DISPLAY_NAME} — modern holiday home exterior`}
           fill
           priority
           sizes="100vw"
@@ -232,11 +234,27 @@ export default function HeroSection() {
               }}
               className="w-full text-start"
             >
-              <h1 className="font-hero-serif text-[clamp(1.875rem,calc(0.85rem+5.8vw),4.75rem)] font-semibold uppercase leading-[0.94] tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:leading-[0.92]">
-                Curated stays
+              <h1 className="text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)]">
+                <span className="block font-sans text-[0.7rem] font-bold uppercase tracking-[0.26em] text-primary [text-shadow:0_2px_14px_rgba(0,0,0,0.45)] sm:text-xs">
+                  {APP_DISPLAY_NAME}
+                </span>
+                <span className="mt-2 block font-hero-serif text-[clamp(1.875rem,calc(0.85rem+5.8vw),4.75rem)] font-semibold uppercase leading-[0.94] tracking-tight sm:mt-2.5 sm:leading-[0.92]">
+                  Curated stays
+                </span>
               </h1>
-              <p className="mt-3 max-w-md text-[0.9375rem] font-medium leading-relaxed text-white/90 [text-shadow:0_2px_12px_rgba(0,0,0,0.35)] sm:mt-4 sm:text-base sm:leading-relaxed md:mt-5 md:text-lg">
-                Handpicked homes. Unforgettable moments. Effortless stays.
+              <p className="mt-3 max-w-md text-[0.9375rem] font-medium leading-relaxed text-white/90 [text-shadow:0_2px_12px_rgba(0,0,0,0.35)] sm:mt-4 sm:text-base sm:leading-relaxed md:mt-5">
+                Handpicked UAE stays, clear pricing in AED, and a calm path from
+                browse to checkout.
+              </p>
+              <p
+                id="application-purpose-summary"
+                className="mt-3 max-w-xl text-[0.8125rem] leading-relaxed text-white/88 [text-shadow:0_2px_10px_rgba(0,0,0,0.35)] sm:text-sm"
+              >
+                <span className="font-semibold text-white">Application purpose: </span>
+                The <strong className="font-semibold text-white">{APP_DISPLAY_NAME}</strong>{" "}
+                web application helps you find and book short-term holiday home rentals in
+                the United Arab Emirates, manage your account, pay in AED, and exchange
+                stay-related messages with hosts.
               </p>
               <div className="mt-5 sm:mt-7 md:mt-8">
                 <Link

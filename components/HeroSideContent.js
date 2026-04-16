@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
+import { APP_DISPLAY_NAME } from "@/lib/brand";
 import FeaturedStaysCarouselBlock from "@/components/FeaturedStaysCarouselBlock";
 import HostAvatarStack from "@/components/HostAvatarStack";
 import { sampleListings } from "@/lib/sampleListings";
@@ -120,7 +121,7 @@ export default function HeroSideContent() {
                     <span className="h-3 w-3 rotate-45 rounded-sm bg-white/90 [@media(max-height:640px)]:h-2.5 [@media(max-height:640px)]:w-2.5" />
                   </span>
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/80 [@media(max-height:640px)]:text-[0.65rem]">
-                    Olyahomes
+                    {APP_DISPLAY_NAME}
                   </p>
                 </div>
                 <p className="mt-4 border-l-2 border-white/35 pl-4 text-lg font-semibold leading-snug tracking-tight text-white [@media(max-height:720px)]:mt-3 [@media(max-height:720px)]:text-base [@media(max-height:640px)]:mt-2.5 [@media(max-height:640px)]:pl-3 [@media(max-height:640px)]:text-sm [@media(max-height:640px)]:leading-snug">

@@ -1,9 +1,10 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { fetchTestimonials } from "@/lib/api";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -11,10 +12,10 @@ import "swiper/css/pagination";
 
 const smoothEase = [0.22, 1, 0.36, 1];
 
-const testimonials = [
+const fallbackTestimonials = [
   {
     quote:
-      "The apartment was exactly as pictured—quiet, spotless, and the host’s check-in notes made arrival effortless. We’ll book through Olyahomes again.",
+      "The apartment was exactly as pictured—quiet, spotless, and the host’s check-in notes made arrival effortless. We’ll book through Olya holiday homes again.",
     name: "Sarah M.",
     meta: "Dubai, UAE • 5 nights",
     rating: 5,
@@ -86,6 +87,26 @@ export default function TestimonialsSection() {
   const rise = (y) => (reduceMotion ? 0 : y);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const body = await fetchTestimonials();
+        if (cancelled) return;
+        const rows = Array.isArray(body?.testimonials) ? body.testimonials : [];
+        if (rows.length) {
+          setTestimonials(rows);
+        }
+      } catch {
+        // Keep fallback testimonials if API is unavailable or empty.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const headerMotion = {
     hidden: { opacity: 0, y: rise(18) },

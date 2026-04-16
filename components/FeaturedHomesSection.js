@@ -6,7 +6,9 @@ import Link from "next/link";
 import { useRef } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import FavoriteHeartButton from "@/components/FavoriteHeartButton";
 import { formatAED } from "@/lib/currency";
+import { listingDetailHref } from "@/lib/listingRoutes";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -89,23 +91,6 @@ function IconUsers({ className }) {
   );
 }
 
-function IconHeart({ className }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-    </svg>
-  );
-}
-
 const smoothEase = [0.22, 1, 0.36, 1];
 
 export default function FeaturedHomesSection({ homes }) {
@@ -175,7 +160,7 @@ export default function FeaturedHomesSection({ homes }) {
           </motion.div>
           <motion.div variants={headerMotion} className="shrink-0 sm:pb-0.5">
             <Link
-              href="/listings"
+              href="/listings/"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary underline decoration-primary/50 decoration-2 underline-offset-[5px] transition hover:decoration-primary"
             >
               View all listings
@@ -231,6 +216,8 @@ export default function FeaturedHomesSection({ homes }) {
               watchOverflow
               speed={600}
               grabCursor
+              noSwiping
+              noSwipingClass="swiper-no-swiping"
               autoplay={
                 reduceMotion
                   ? false
@@ -276,8 +263,9 @@ export default function FeaturedHomesSection({ homes }) {
                 <SwiperSlide key={home.slug} className="!h-auto">
                   <article className="featured-home-card flex h-full flex-col overflow-hidden rounded-xl border border-zinc-200/90 bg-white shadow-[0_12px_36px_-20px_rgba(44,36,25,0.18)] transition duration-300 sm:rounded-2xl">
                     <Link
-                      href={`/listings/${home.slug}`}
+                      href={listingDetailHref(home.slug)}
                       className="group relative block min-h-[11.25rem] flex-[3] overflow-hidden sm:min-h-[17rem] lg:min-h-[16.5rem]"
+                      title={home.title}
                     >
                       {index === 1 ? (
                         <span className="absolute left-2 top-2 z-20 rounded-full bg-primary px-2 py-0.5 text-[0.55rem] font-bold uppercase tracking-wide text-white shadow-sm sm:left-3 sm:top-3 sm:px-3 sm:py-1 sm:text-[0.65rem]">
@@ -293,7 +281,7 @@ export default function FeaturedHomesSection({ homes }) {
                       />
                       <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/25 to-black/10" />
                       <div className="absolute inset-x-0 bottom-0 space-y-1.5 p-2.5 sm:space-y-2.5 sm:p-5">
-                        <h3 className="line-clamp-2 text-xs font-bold leading-snug text-white drop-shadow-sm sm:line-clamp-none sm:text-lg sm:leading-snug md:text-xl">
+                        <h3 className="line-clamp-2 text-xs font-bold leading-snug text-white drop-shadow-sm sm:text-lg sm:leading-snug md:text-xl">
                           {home.title}
                         </h3>
                         <div className="flex items-center gap-1 text-[0.65rem] text-white/95 sm:gap-1.5 sm:text-sm">
@@ -329,7 +317,7 @@ export default function FeaturedHomesSection({ homes }) {
                     <div className="flex flex-col gap-0 border-t border-zinc-100 bg-white px-2.5 py-2.5 sm:px-5 sm:py-4">
                       <div className="flex items-center justify-between gap-2 sm:gap-3">
                         <Link
-                          href={`/listings/${home.slug}`}
+                          href={listingDetailHref(home.slug)}
                           className="min-w-0 text-foreground transition hover:text-primary"
                         >
                           <span className="text-sm font-bold tabular-nums sm:text-lg md:text-xl">
@@ -340,17 +328,17 @@ export default function FeaturedHomesSection({ homes }) {
                             / night
                           </span>
                         </Link>
-                        <button
-                          type="button"
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 transition hover:border-primary/40 hover:text-primary sm:h-10 sm:w-10"
-                          aria-label={`Save ${home.title}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          }}
+                        <span
+                          className="swiper-no-swiping shrink-0"
+                          onPointerDown={(e) => e.stopPropagation()}
                         >
-                          <IconHeart className="h-4 w-4 sm:h-5 sm:w-5" />
-                        </button>
+                          <FavoriteHeartButton
+                            propertyId={home.id ?? null}
+                            initialFavorite={Boolean(home.isFavorite)}
+                            size="md"
+                            variant="panel"
+                          />
+                        </span>
                       </div>
                     </div>
                   </article>

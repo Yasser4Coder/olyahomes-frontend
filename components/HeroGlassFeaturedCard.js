@@ -3,11 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useState } from "react";
 import { formatAED } from "@/lib/currency";
 import { sampleListings } from "@/lib/sampleListings";
 import { useFeaturedCarousel } from "@/components/useFeaturedCarousel";
-
-const featured = sampleListings;
+import { APP_DISPLAY_NAME } from "@/lib/brand";
+import { ApiError, fetchFeaturedProperties } from "@/lib/api";
+import { mapPropertyFromApi } from "@/lib/listingMappers";
+import { listingDetailHref } from "@/lib/listingRoutes";
 
 const smoothEase = [0.22, 1, 0.36, 1];
 
@@ -50,7 +53,28 @@ function StarRow({ className, small }) {
 }
 
 export default function HeroGlassFeaturedCard({ compact = false }) {
-  const carousel = useFeaturedCarousel(featured.length);
+  const [homes, setHomes] = useState(sampleListings);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const body = await fetchFeaturedProperties(8);
+        const raw = Array.isArray(body?.properties) ? body.properties : [];
+        const mapped = raw.map(mapPropertyFromApi).filter(Boolean);
+        if (!cancelled && mapped.length) setHomes(mapped);
+      } catch (e) {
+        if (!cancelled && !(e instanceof ApiError && e.status === 401)) {
+          /* keep sample */
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const carousel = useFeaturedCarousel(homes.length);
   const {
     index,
     goTo,
@@ -111,14 +135,14 @@ export default function HeroGlassFeaturedCard({ compact = false }) {
                 className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
                 style={{ transform: `translateX(-${index * 100}%)` }}
               >
-                {featured.map((s, i) => (
+                {homes.map((s, i) => (
                   <div
                     key={s.slug}
                     className="w-full shrink-0 px-0.5"
                     aria-hidden={i !== index}
                   >
                     <Link
-                      href={`/listings/${s.slug}`}
+                      href={listingDetailHref(s.slug)}
                       className="group block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-zinc-900"
                     >
                       <div
@@ -189,7 +213,7 @@ export default function HeroGlassFeaturedCard({ compact = false }) {
             role="tablist"
             aria-label="Featured slides"
           >
-            {featured.map((s, i) => (
+            {homes.map((s, i) => (
               <button
                 key={s.slug}
                 type="button"
@@ -242,8 +266,8 @@ export default function HeroGlassFeaturedCard({ compact = false }) {
             <p
               className={`mt-2.5 leading-relaxed text-zinc-700 ${compact ? "text-[0.7rem]" : "text-sm"}`}
             >
-              <span className="font-medium text-zinc-900">“Olyahomes</span> made our
-              family getaway effortless.”
+              <span className="font-medium text-zinc-900">“{APP_DISPLAY_NAME}</span> made
+              our family getaway effortless.”
             </p>
             <p
               className={`mt-1.5 font-semibold text-zinc-500 ${compact ? "text-[0.65rem]" : "text-xs"}`}

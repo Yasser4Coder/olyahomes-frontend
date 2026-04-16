@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
+import { ApiError, submitContactMessage } from "@/lib/api";
 
 function IconSpark({ className }) {
   return (
@@ -35,6 +39,37 @@ const trustChips = [
 ];
 
 export default function HomeContactSection() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState(null);
+  const [ok, setOk] = useState(false);
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setErr(null);
+    setOk(false);
+    setBusy(true);
+    try {
+      await submitContactMessage({
+        kind: "guest_support",
+        name: String(name).trim(),
+        email: String(email).trim(),
+        message: String(message).trim(),
+        subject: "Homepage contact form",
+      });
+      setOk(true);
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (e2) {
+      setErr(e2 instanceof ApiError ? e2.message : "Could not send message.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <section
       className="relative isolate overflow-hidden px-4 py-20 sm:px-6 lg:py-28"
@@ -132,7 +167,19 @@ export default function HomeContactSection() {
                 </div>
               </div>
 
-              <form className="space-y-5">
+              {ok ? (
+                <div className="mb-5 rounded-2xl border border-emerald-200/70 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-950">
+                  <p className="font-semibold">Message sent.</p>
+                  <p className="mt-1 text-emerald-950/80">Our team will read it and reply as soon as possible.</p>
+                </div>
+              ) : null}
+              {err ? (
+                <div className="mb-5 rounded-2xl border border-red-200/70 bg-red-50/70 px-4 py-3 text-sm text-red-900" role="alert">
+                  {err}
+                </div>
+              ) : null}
+
+              <form className="space-y-5" onSubmit={onSubmit} aria-busy={busy}>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
                     <label
@@ -147,6 +194,10 @@ export default function HomeContactSection() {
                       type="text"
                       autoComplete="name"
                       placeholder="Your name"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={busy}
                       className="mt-2 w-full rounded-xl border border-secondary/20 bg-neutral px-4 py-3 text-foreground outline-none transition placeholder:text-foreground/35 focus:border-primary/40 focus:ring-2 focus:ring-primary/25"
                     />
                   </div>
@@ -163,6 +214,10 @@ export default function HomeContactSection() {
                       type="email"
                       autoComplete="email"
                       placeholder="you@example.com"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={busy}
                       className="mt-2 w-full rounded-xl border border-secondary/20 bg-neutral px-4 py-3 text-foreground outline-none transition placeholder:text-foreground/35 focus:border-primary/40 focus:ring-2 focus:ring-primary/25"
                     />
                   </div>
@@ -179,15 +234,20 @@ export default function HomeContactSection() {
                     name="message"
                     rows={4}
                     placeholder="What’s on your mind?"
+                    required
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    disabled={busy}
                     className="mt-2 w-full resize-y rounded-xl border border-secondary/20 bg-neutral px-4 py-3 text-foreground outline-none transition placeholder:text-foreground/35 focus:border-primary/40 focus:ring-2 focus:ring-primary/25"
                   />
                 </div>
                 <div className="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
                   <button
-                    type="button"
-                    className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-bold tracking-wide text-white shadow-lg shadow-primary/25 transition hover:bg-primary/90 sm:w-auto"
+                    type="submit"
+                    disabled={busy}
+                    className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-bold tracking-wide text-white shadow-lg shadow-primary/25 transition hover:bg-primary/90 disabled:opacity-60 sm:w-auto"
                   >
-                    Send message
+                    {busy ? "Sending..." : "Send message"}
                     <span className="inline-block transition group-hover:translate-x-0.5">
                       →
                     </span>
