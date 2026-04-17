@@ -8,14 +8,12 @@ const columns = [
     links: [
       { href: "/listings", label: "Browse homes" },
       { href: "/how-it-works", label: "How it works" },
-      { href: "/faq", label: "FAQ" },
       { href: "/about", label: "About" },
     ],
   },
   {
     title: "Hosting",
     links: [
-      { href: "/host", label: "Become a host" },
       { href: "/contact", label: "Partner with us" },
     ],
   },
@@ -106,6 +104,15 @@ export default function SiteFooter() {
               {APP_DISPLAY_NAME} connects guests with curated holiday homes and hosts
               with clear tools. Find a stay that fits your trip, book in a few steps,
               and pay securely—all in AED.
+            </p>
+            <p className="mt-5 text-sm text-zinc-400">
+              <span className="font-semibold text-zinc-200">Email</span>{" "}
+              <a
+                href="mailto:info@olyaholidayhomes.com"
+                className="font-semibold text-primary underline decoration-primary/30 decoration-2 underline-offset-[5px] transition hover:decoration-primary"
+              >
+                info@olyaholidayhomes.com
+              </a>
             </p>
             <ul className="mt-6 flex flex-wrap gap-2 text-xs font-medium text-zinc-500">
               <li className="rounded-full border border-white/10 bg-white/5 px-3 py-1">

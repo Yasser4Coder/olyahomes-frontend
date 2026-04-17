@@ -10,7 +10,7 @@ import { sampleListings } from "@/lib/sampleListings";
 const pick = (i) => sampleListings[i % sampleListings.length].coverImage;
 
 const aboutImages = {
-  heroCollage: [pick(0), pick(1), pick(2)],
+  heroCollage: [pick(8), pick(9), pick(10)],
   mission: pick(3),
   team: [pick(4), pick(5), pick(6), pick(7)],
   blog: [pick(8), pick(9), pick(10)],
@@ -80,33 +80,6 @@ const team = [
   },
 ];
 
-const posts = [
-  {
-    href: "/faq",
-    imageIndex: 0,
-    meta: "Tips · Booking",
-    title: "How to pick the right stay for your trip",
-    excerpt:
-      "A short checklist for comparing listings—location, amenities, and what to ask before you book.",
-  },
-  {
-    href: "/how-it-works",
-    imageIndex: 1,
-    meta: "Guide · Hosts",
-    title: "Listing your home with clarity",
-    excerpt:
-      "Why structured photos and rules help the right guests say yes—and reduce back-and-forth.",
-  },
-  {
-    href: "/contact",
-    imageIndex: 2,
-    meta: "Company · Updates",
-    title: `What we’re building next at ${APP_DISPLAY_NAME}`,
-    excerpt:
-      "Payments, calendars, and messaging—how the product will evolve while keeping the UX calm.",
-  },
-];
-
 function IconStopwatch({ className }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
@@ -163,7 +136,7 @@ export default function AboutPage() {
         <div className="mt-8 grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12">
           <div>
             <h1 className="font-hero-serif text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.12] tracking-tight text-foreground">
-              Good design makes a product useful.
+              Trusted holiday homes, made easy.
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground/65 sm:text-[1.05rem]">
               {APP_DISPLAY_NAME} connects travellers with welcoming homes and gives hosts the tools to present
@@ -283,10 +256,10 @@ export default function AboutPage() {
               ))}
             </ul>
             <Link
-              href="/faq"
+              href="/contact"
               className="mt-8 inline-flex text-sm font-semibold text-primary underline-offset-4 hover:underline"
             >
-              Learn more
+              Contact us
             </Link>
           </div>
           <div className="overflow-hidden rounded-3xl bg-white/50 shadow-[0_24px_56px_-32px_rgba(44,36,25,0.45)] ring-1 ring-secondary/10">
@@ -393,48 +366,6 @@ export default function AboutPage() {
               </article>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* —— Blog —— */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:px-10 lg:px-14 lg:py-20">
-        <div className="text-center">
-          <h2 className="font-hero-serif text-[clamp(1.65rem,3.2vw,2.35rem)] font-semibold text-foreground">
-            Latest from {APP_DISPLAY_NAME}
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-foreground/60">
-            Point these cards to real blog posts when you have a CMS—or use them as quick links to key
-            guides on the site.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {posts.map((post) => (
-            <Link
-              key={post.title}
-              href={post.href}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-secondary/12 bg-white shadow-[0_14px_40px_-28px_rgba(44,36,25,0.28)] transition hover:border-primary/25 hover:shadow-[0_20px_48px_-28px_rgba(44,36,25,0.35)]"
-            >
-              <div className="relative aspect-16/10 w-full bg-neutral-dark/20">
-                <Image
-                  src={aboutImages.blog[post.imageIndex]}
-                  alt=""
-                  fill
-                  className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground/45">
-                  {post.meta}
-                </p>
-                <p className="mt-2 font-semibold leading-snug text-foreground group-hover:text-primary">
-                  {post.title}
-                </p>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-foreground/60">{post.excerpt}</p>
-                <span className="mt-4 text-sm font-semibold text-primary">Read article →</span>
-              </div>
-            </Link>
-          ))}
         </div>
       </section>
 

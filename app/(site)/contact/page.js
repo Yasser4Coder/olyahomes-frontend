@@ -103,6 +103,15 @@ export default function ContactPage() {
             right team—we
             typically reply within one business day.
           </p>
+          <p className="mt-4 text-sm text-foreground/65">
+            Prefer email?{" "}
+            <a
+              href="mailto:info@olyaholidayhomes.com"
+              className="font-semibold text-primary underline decoration-primary/30 decoration-2 underline-offset-[5px] transition hover:decoration-primary"
+            >
+              info@olyaholidayhomes.com
+            </a>
+          </p>
         </div>
       </section>
 

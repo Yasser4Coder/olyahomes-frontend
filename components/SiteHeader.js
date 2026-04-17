@@ -12,7 +12,6 @@ const defaultNav = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/host", label: "Host" },
   { href: "/about", label: "About" },
-  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
 

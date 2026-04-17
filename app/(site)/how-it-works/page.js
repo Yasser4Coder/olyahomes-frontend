@@ -145,11 +145,8 @@ export default function HowItWorksPage() {
               Book a stay in three steps
             </p>
           </div>
-          <Link
-            href="/faq"
-            className="text-sm font-semibold text-primary hover:underline"
-          >
-            Questions? See FAQ →
+          <Link href="/contact" className="text-sm font-semibold text-primary hover:underline">
+            Questions? Contact us →
           </Link>
         </div>
 

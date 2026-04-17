@@ -145,6 +145,16 @@ export default function HomeContactSection() {
                 >
                   Full contact page
                 </Link>
+                <span className="mx-2 text-foreground/35" aria-hidden>
+                  ·
+                </span>
+                <span className="text-foreground/55">Or email us:</span>{" "}
+                <a
+                  href="mailto:info@olyaholidayhomes.com"
+                  className="font-semibold text-primary underline decoration-primary/30 decoration-2 underline-offset-[5px] transition hover:decoration-primary"
+                >
+                  info@olyaholidayhomes.com
+                </a>
               </p>
             </div>
 
